@@ -55,7 +55,7 @@
         #nextBtn { right: 40px; }
 
         /* ==========================================================
-           3. LE CONTENEUR DU SLIDER LINÉAIRE (Effet Glissement)
+           3. LE CONTENEUR DU SLIDER LINÉAIRE (Zoom & Superposition)
            ========================================================== */
         .carousel-stage {
             width: 100%;
@@ -70,29 +70,31 @@
         .carousel {
             display: flex;
             align-items: center;
-            gap: 30px; /* Espace entre les images pour voir le glissement */
+            gap: -80px; /* Espace négatif pour forcer la superposition rapprochée */
             position: absolute;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Glissement fluide */
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .carousel-item {
-            width: 360px;  
-            height: 260px; 
+            width: 300px;  /* Format légèrement rapetissé */
+            height: 210px; 
             flex-shrink: 0;
             border: none;
-            border-radius: 0px; /* Coins strictement carrés */
+            border-radius: 6px; /* Tout petit arrondi discret */
             overflow: hidden;
             background-color: #f0f0f0;
-            opacity: 0.25; /* Transparence pour les photos sur les côtés */
-            transform: scale(0.9); /* Légèrement plus petites sur les côtés */
+            opacity: 0.35; /* Transparence pour les côtés */
+            transform: scale(0.75); /* Plus petites sur les côtés pour l'effet de zoom */
             transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+            z-index: 1;
         }
 
-        /* La photo centrale (active) est nette, au premier plan et en taille normale */
+        /* La photo centrale (active) : zoomée à 100%, nette, au premier plan */
         .carousel-item.active {
             opacity: 1;
             transform: scale(1);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+            z-index: 5; /* Au-dessus des autres pour se superposer proprement */
         }
 
         .carousel-item a {
@@ -109,7 +111,7 @@
             display: block;
         }
 
-        /* Boutons de contrôle internes pour faire défiler les photos du thème */
+        /* Boutons de contrôle pour faire défiler les photos du thème */
         .slider-controls {
             position: absolute;
             bottom: 40px;
@@ -145,7 +147,7 @@
         <div class="carousel" id="carousel"></div>
     </div>
 
-    <!-- Petits boutons discrets pour défiler les photos du thème en cours -->
+    <!-- Boutons pour défiler les photos -->
     <div class="slider-controls">
         <button class="slider-btn" id="slidePrev">&larr; Précédent</button>
         <button class="slider-btn" id="slideNext">Suivant &rarr;</button>
@@ -210,16 +212,14 @@
             const items = carousel.querySelectorAll('.carousel-item');
             if (items.length === 0) return;
 
-            // Calculer le décalage pour centrer la photo active
-            const itemWidth = items[0].offsetWidth;
-            const gap = 30;
+            const itemWidth = 300; // Largeur de la photo
+            const overlap = 90;    // Espace de chevauchement entre les photos
             const containerWidth = window.innerWidth;
             
-            // Position pour que l'élément `currentIndex` soit au milieu de l'écran
-            const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * (itemWidth + gap));
+            // Centrer l'élément actif
+            const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * (itemWidth - overlap));
             carousel.style.transform = `translateX(${offset}px)`;
 
-            // Gestion des classes active/transparence
             items.forEach((item, index) => {
                 if (index === currentIndex) {
                     item.classList.add('active');
@@ -229,7 +229,6 @@
             });
         }
 
-        // Faire défiler les photos (glissement) via les boutons du bas ou la molette
         function slidePhotos(direction) {
             const currentTheme = themes[currentThemeIndex];
             const maxIndex = themeData[currentTheme].length - 1;
@@ -244,7 +243,6 @@
         document.getElementById('slideNext').addEventListener('click', () => slidePhotos(1));
         document.getElementById('slidePrev').addEventListener('click', () => slidePhotos(-1));
 
-        // Molette de la souris pour glisser horizontalement entre les photos
         window.addEventListener('wheel', (event) => {
             if (event.deltaY > 0) {
                 slidePhotos(1);
@@ -253,7 +251,6 @@
             }
         }, { passive: true });
 
-        // Changement de thème avec les flèches latérales de l'écran
         function changeTheme(direction) {
             body.classList.remove(themes[currentThemeIndex]);
             currentThemeIndex = (currentThemeIndex + direction + themes.length) % themes.length;
@@ -266,7 +263,6 @@
         document.getElementById('nextBtn').addEventListener('click', () => changeTheme(1));
         document.getElementById('prevBtn').addEventListener('click', () => changeTheme(-1));
 
-        // Initialisation
         updateCarouselPhotos(themes[0]);
         window.addEventListener('resize', updateSliderPosition);
     </script>
