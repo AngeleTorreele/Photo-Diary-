@@ -17,7 +17,7 @@
             position: relative;
             background-color: #ffffff;
             transition: background 0.5s ease;
-            cursor: default; /* Curseur classique */
+            cursor: default;
         }
 
         body.theme-bleu,
@@ -39,7 +39,7 @@
             color: #222222;
             font-size: 3rem;
             cursor: pointer;
-            z-index: 10;
+            z-index: 100;
             opacity: 0.4;
             transition: opacity 0.3s, transform 0.3s;
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -55,7 +55,7 @@
         #nextBtn { right: 40px; }
 
         /* ==========================================================
-           3. LE CONTENEUR DU SLIDER (Superposition & Dégressif)
+           3. LE CONTENEUR DU SLIDER (Centrage & Superposition)
            ========================================================== */
         .carousel-stage {
             width: 100%;
@@ -71,6 +71,7 @@
             display: flex;
             align-items: center;
             position: absolute;
+            /* Transition fluide lors du glissement d'une photo à l'autre */
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
@@ -83,7 +84,7 @@
             overflow: hidden;
             background-color: #fefefe;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-            /* Les styles de taille, opacité et position sont gérés dynamiquement en JS */
+            /* Transition fluide pour la taille, l'opacité et l'ombre */
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, box-shadow 0.5s ease;
         }
 
@@ -205,34 +206,29 @@
             const baseWidth = 320;
             const containerWidth = window.innerWidth;
             
-            // Calculer la position globale pour centrer la photo active
-            const offset = (containerWidth / 2) - (baseWidth / 2) - (currentIndex * 190);
+            // Calcule le décalage exact pour que la photo numéro `currentIndex` soit centrée à l'écran
+            const offset = (containerWidth / 2) - (baseWidth / 2) - (currentIndex * 180);
             carousel.style.transform = `translateX(${offset}px)`;
 
-            // Appliquer dynamiquement la taille dégressive, l'opacité et l'ordre de superposition (z-index) selon la distance par rapport au centre
+            // Ajuste l'échelle, l'opacité et l'ordre de superposition (z-index) selon la distance par rapport au centre
             items.forEach((item, index) => {
                 const distance = Math.abs(index - currentIndex);
                 
                 if (distance === 0) {
-                    // Photo principale (au centre) : taille normale, nette, au premier plan
+                    // Photo active au centre : taille réelle, nette, au premier plan
                     item.style.transform = 'scale(1)';
                     item.style.opacity = '1';
                     item.style.zIndex = '50';
                     item.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.15)';
-                } else if (distance === 1) {
-                    // Photos adjacentes directes : un peu plus petites, transparentes
-                    item.style.transform = 'scale(0.82)';
-                    item.style.opacity = '0.6';
-                    item.style.zIndex = '30';
-                    item.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.08)';
                 } else {
-                    // Photos plus éloignées : encore plus petites et transparentes sur les côtés
-                    let scale = Math.max(0.5, 1 - (distance * 0.18));
-                    let opacity = Math.max(0.15, 1 - (distance * 0.3));
+                    // Photos sur les côtés : dégressives en taille et en opacité, se glissant sous les autres
+                    let scale = Math.max(0.45, 1 - (distance * 0.2));
+                    let opacity = Math.max(0.2, 1 - (distance * 0.35));
+                    
                     item.style.transform = `scale(${scale})`;
                     item.style.opacity = `${opacity}`;
                     item.style.zIndex = `${50 - distance * 10}`;
-                    item.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.04)';
+                    item.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.05)';
                 }
             });
         }
