@@ -5,7 +5,7 @@
     <title>Mon Journal Photo - Multi-Ambiances</title>
     <style>
         /* ==========================================================
-           1. STYLES GÉNÉRAUX & CURSEURS SUR-MESURE PAR THÈME
+           1. STYLES GÉNÉRAUX & VRAIS CURSEURS VECTORIELS SUR-MESURE
            ========================================================== */
         body {
             margin: 0;
@@ -18,10 +18,15 @@
             transition: background 0.8s ease;
         }
 
-        /* --- AMBIANCE 1 : BLEU NUIT ÉTOILÉ (Curseur Étoile) --- */
+        /* Force l'affichage du curseur sur absolument TOUS les éléments de la page */
+        body *, body *:before, body *:after {
+            cursor: inherit;
+        }
+
+        /* --- AMBIANCE 1 : BLEU NUIT ÉTOILÉ (Curseur Étoile SVG) --- */
         body.theme-bleu {
             background-color: #050714;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>⭐</svg>"), auto;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ffffff' stroke='%238ab4f8' stroke-width='1'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"), auto;
         }
         body.theme-bleu::before {
             content: "";
@@ -29,14 +34,16 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, rgba(138, 180, 248, 0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 150px 120px, rgba(197, 138, 248, 0.8), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 200px 200px, #ffffff, rgba(0,0,0,0));
-            background-size: 350px 350px;
-            opacity: 0.9;
-            animation: scintillementPaillettes 1.5s infinite alternate;
+                radial-gradient(3px 3px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 70px 120px, #8ab4f8, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 140px 50px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 210px 180px, #c58af8, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 280px 90px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 350px 250px, #8ab4f8, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 420px 140px, #ffffff, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            opacity: 1;
+            animation: ultraScintillement 0.6s infinite alternate;
             z-index: 0;
             pointer-events: none;
         }
@@ -44,7 +51,7 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(138, 180, 248, 0.4);
         }
 
-        /* --- AMBIANCE 2 : BÉTON BRUT (Curseur Bonhomme) --- */
+        /* --- AMBIANCE 2 : BÉTON BRUT (Curseur Bonhomme SVG) --- */
         body.theme-beton {
             background-color: #55585d;
             background-image: 
@@ -54,13 +61,13 @@
                 linear-gradient(45deg, rgba(0,0,0,0.15) 25%, transparent 25%),
                 linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%);
             background-size: 100% 100%, 100% 100%, 100% 100%, 8px 8px, 8px 8px;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>👤</svg>"), auto;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ffffff' stroke='%23333333' stroke-width='1'><path d='M12 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 10c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z'/></svg>"), auto;
         }
         body.theme-beton .carousel-item {
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- AMBIANCE 3 : VERT POMME & ROSE MARBRÉ (Curseur Fée) --- */
+        /* --- AMBIANCE 3 : VERT POMME & ROSE MARBRÉ (Curseur Fée SVG) --- */
         body.theme-feerique {
             background-color: #d1f4e0;
             background-image: 
@@ -70,7 +77,7 @@
                 radial-gradient(circle at 90% 10%, rgba(255, 182, 193, 0.6) 0%, transparent 40%);
             background-size: 150% 150%;
             animation: marbrageMouvant 12s ease infinite alternate;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>🧚‍♀️</svg>"), auto;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ff69b4' stroke='%2376ff03' stroke-width='1'><path d='M12 2l2.4 6.8h7.2l-5.8 4.2 2.2 6.8-5.8-4.2-5.8 4.2 2.2-6.8-5.8-4.2h7.2z'/></svg>"), auto;
         }
         @keyframes marbrageMouvant {
             0% { background-position: 0% 0%; }
@@ -82,13 +89,15 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(3px 3px at 40px 60px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 150px 180px, #76ff03, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 250px 90px, #ff69b4, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 320px 280px, #ffffff, rgba(0,0,0,0));
-            background-size: 250px 250px;
-            opacity: 0.95;
-            animation: scintillementPaillettes 1s infinite alternate;
+                radial-gradient(4px 4px at 30px 50px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 90px 140px, #76ff03, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 170px 80px, #ff69b4, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 240px 220px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 310px 110px, #76ff03, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 380px 270px, #ff69b4, rgba(0,0,0,0));
+            background-size: 180px 180px;
+            opacity: 1;
+            animation: ultraScintillement 0.5s infinite alternate;
             z-index: 0;
             pointer-events: none;
         }
@@ -96,7 +105,7 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(118, 255, 3, 0.4);
         }
 
-        /* --- AMBIANCE 4 : CIEL TEXTURÉ NUAGE (Curseur Nuage) --- */
+        /* --- AMBIANCE 4 : CIEL TEXTURÉ NUAGE (Curseur Nuage SVG) --- */
         body.theme-ciel {
             background-color: #6294d1;
             background-image: 
@@ -105,20 +114,20 @@
                 radial-gradient(circle at 10% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 40%),
                 radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 40%);
             background-size: 120% 120%;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>☁️</svg>"), auto;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ffffff' stroke='%236294d1' stroke-width='1'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>"), auto;
         }
         body.theme-ciel .carousel-item {
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 255, 255, 0.5);
         }
 
-        @keyframes scintillementPaillettes {
-            0% { opacity: 0.3; transform: scale(0.98); filter: brightness(0.8); }
-            50% { opacity: 1; transform: scale(1.02); filter: brightness(1.4); }
-            100% { opacity: 0.4; transform: scale(1); filter: brightness(0.9); }
+        /* Animation ultra-scintillante pour un effet paillettes maximal */
+        @keyframes ultraScintillement {
+            0% { opacity: 0.2; transform: scale(0.95); filter: brightness(0.6); }
+            100% { opacity: 1; transform: scale(1.08); filter: brightness(1.8); }
         }
 
         /* ==========================================================
-           2. LES FLÈCHES EN TEXTURE DE CRAIE BLANCHE (SANS ROND)
+           2. LES FLÈCHES EN TEXTURE DE CRAIE BLANCHE
            ========================================================== */
         .nav-arrow {
             position: absolute;
@@ -191,7 +200,6 @@
             display: block;
         }
 
-        /* Positionnement exact pour 5 photos (360° / 5 = 72°) */
         .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(420px); }
         .carousel-item:nth-child(2) { transform: rotateY(72deg) translateZ(420px); }
         .carousel-item:nth-child(3) { transform: rotateY(144deg) translateZ(420px); }
@@ -201,20 +209,14 @@
 </head>
 <body class="theme-bleu">
 
-    <!-- Flèches craie libres et bien orientées -->
     <button class="nav-arrow" id="prevBtn">&larr;</button>
     <button class="nav-arrow" id="nextBtn">&rarr;</button>
 
     <div class="carousel-stage">
-        <div class="carousel" id="carousel">
-            <!-- Les 5 photos injectées dynamiquement selon l'ambiance -->
-        </div>
+        <div class="carousel" id="carousel"></div>
     </div>
 
     <script>
-        // ==========================================================
-        // 4. DONNÉES : 5 PHOTOS DIFFÉRENTES POUR CHAQUE AMBIANCE
-        // ==========================================================
         const themeData = {
             'theme-bleu': [
                 { img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&h=450&auto=format&fit=crop", link: "fait.html" },
@@ -231,11 +233,11 @@
                 { img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-5.html" }
             ],
             'theme-feerique': [
-                { img: "YEOUIDO ECOLOGIC PARK 2.JPG", link: "fee-1.html" },
-                { img: "YEOUIDO ECOLOGIC PARK 1.JPG" },
-                { img: "SAULE PLEUREUR 1.JPG", link: "fee-3.html" },
-                { img: "SEOUL FOREST PART 1 . 1.JPG" },
-                { img: "SEOUL FOREST PART 2 . 1.JPG" }
+                { img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-1.html" },
+                { img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-2.html" },
+                { img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-3.html" },
+                { img: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-4.html" },
+                { img: "https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-5.html" }
             ],
             'theme-ciel': [
                 { img: "https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-1.html" },
@@ -246,9 +248,6 @@
             ]
         };
 
-        // ==========================================================
-        // 5. MOTEURS : ROTATION 3D & CHANGEMENT D'AMBIANCE DYNAMIQUE
-        // ==========================================================
         let currentAngle = 0;
         const carousel = document.getElementById('carousel');
 
@@ -264,7 +263,6 @@
         function updateCarouselPhotos(themeName) {
             carousel.innerHTML = ""; 
             const photos = themeData[themeName];
-
             photos.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'carousel-item';
@@ -289,7 +287,6 @@
         document.getElementById('nextBtn').addEventListener('click', () => changeTheme(1));
         document.getElementById('prevBtn').addEventListener('click', () => changeTheme(-1));
 
-        // Initialisation au chargement
         updateCarouselPhotos(themes[0]);
     </script>
 </body>
