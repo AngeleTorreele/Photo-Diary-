@@ -5,61 +5,86 @@
     <title>Mon Journal Photo</title>
     <style>
         /* ==========================================================
-           1. LE STYLE GÉNÉRAL ET LE FOND
+           1. LE FOND BLEU NUIT MAGIQUE & ÉTOILES SCINTILLANTES
            ========================================================== */
         body {
-            /* CHANGEMENT DE COULEUR DE FOND : Modifie le code hexadécimal ici si tu veux */
-            background-color: #0b0b0b; 
+            background-color: #050714; /* Bleu nuit profond */
             margin: 0;
-            overflow: hidden; /* Bloque les barres de défilement de la page */
+            overflow: hidden;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+        }
+
+        /* Les petites paillettes / étoiles en arrière-plan */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, rgba(138, 180, 248, 0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 150px 120px, rgba(197, 138, 248, 0.8), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 200px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 300px 100px, rgba(138, 224, 248, 0.8), rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 350px 350px;
+            opacity: 0.5;
+            animation: scintillement 4s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes scintillement {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
         }
 
         /* ==========================================================
            2. LA SCÈNE 3D ET LA ROUE
            ========================================================== */
         .carousel-stage {
-            perspective: 1600px; /* Profondeur de la 3D */
+            perspective: 1600px;
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1;
         }
 
         .carousel {
-            width: 240px;  /* Largeur de chaque photo */
-            height: 340px; /* Hauteur de chaque photo */
+            /* FORMAT 4/3 PAYSAGE : 320px de large pour 240px de haut */
+            width: 320px;  
+            height: 240px; 
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out; /* Fluidité du mouvement */
+            transition: transform 0.1s ease-out;
         }
 
         /* ==========================================================
-           3. L'ASPECT DES PHOTOS (Surépaisseur & Coins arrondis)
+           3. LES IMAGES : SANS CADRE BLANC, AVEC HALO LUMINEUX 3D
            ========================================================== */
         .carousel-item {
             position: absolute;
             width: 100%;
             height: 100%;
             
-            /* CADRE ET BORDARDS ARRONDIS : Modifie les pixels ci-dessous */
-            border: 3px solid #ffffff;
-            border-radius: 8px; /* Arrondit légèrement les coins */
+            border: none; /* Pas de cadre blanc */
+            border-radius: 10px; /* Coins légèrement arrondis */
             
-            /* EFFET SURÉPAISSEUR / 3D : Ombre portée pour donner du relief */
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 
-                        0 0 20px rgba(255, 255, 255, 0.1);
+            /* HALO LUMINEUX ET PROFONDEUR 3D */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 
+                        0 0 25px rgba(138, 180, 248, 0.4);
             
             overflow: hidden;
-            background-color: #1a1a1a;
-            backface-visibility: hidden; /* Cache l'arrière des images quand elles tournent */
+            background-color: #0b0f19;
+            backface-visibility: hidden;
         }
 
-        /* Pour que le lien HTML prenne toute la place de la boîte */
         .carousel-item a {
             display: block;
             width: 100%;
@@ -69,19 +94,20 @@
         .carousel-item img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Remplit le cadre sans déformer l'image */
+            object-fit: cover; /* Recadre proprement l'image sans la déformer */
             display: block;
         }
 
         /* ==========================================================
            4. POSITIONNEMENT DES PHOTOS DANS LE CERCLE (La Roue)
+           (translateZ augmenté à 450px pour s'adapter au format paysage)
            ========================================================== */
-        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(350px); }
-        .carousel-item:nth-child(2) { transform: rotateY(60deg) translateZ(350px); }
-        .carousel-item:nth-child(3) { transform: rotateY(120deg) translateZ(350px); }
-        .carousel-item:nth-child(4) { transform: rotateY(180deg) translateZ(350px); }
-        .carousel-item:nth-child(5) { transform: rotateY(240deg) translateZ(350px); }
-        .carousel-item:nth-child(6) { transform: rotateY(300deg) translateZ(350px); }
+        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(450px); }
+        .carousel-item:nth-child(2) { transform: rotateY(60deg) translateZ(450px); }
+        .carousel-item:nth-child(3) { transform: rotateY(120deg) translateZ(450px); }
+        .carousel-item:nth-child(4) { transform: rotateY(180deg) translateZ(450px); }
+        .carousel-item:nth-child(5) { transform: rotateY(240deg) translateZ(450px); }
+        .carousel-item:nth-child(6) { transform: rotateY(300deg) translateZ(450px); }
     </style>
 </head>
 <body>
@@ -93,45 +119,39 @@
                5. TES IMAGES ET LEURS LIENS VERS D'AUTRES PAGES
                ========================================================== -->
             
-            <!-- Photo 1 : Clique dessus pour aller vers "page1.html" -->
             <div class="carousel-item">
-                <a href="page1.html">
-                    <img src="YEOUIDO ECOLOGIC PARK 1.JPG" alt="Photo 1">
+                <a href="soul-forest.html">
+                    <img src="SEOUL FOREST PART 2 . 1.JPG" alt="Soul Forest">
                 </a>
             </div>
             
-            <!-- Photo 2 : Clique dessus pour aller vers "page2.html" -->
             <div class="carousel-item">
                 <a href="page2.html">
-                    <img src="DDP 1.jpg" alt="Photo 2">
+                    <img src="YEOUIDO ECOLOGIC PARK 1.JPG" alt="Photo 2">
                 </a>
             </div>
             
-            <!-- Photo 3 -->
             <div class="carousel-item">
                 <a href="page3.html">
-                    <img src="PARAPLUIE 1.JPG" alt="Photo 3">
+                    <img src="SEOUL FOREST PART 1 . 1.JPG" alt="Photo 3">
                 </a>
             </div>
             
-            <!-- Photo 4 -->
             <div class="carousel-item">
                 <a href="page4.html">
-                    <img src="SEOUL FOREST PART 1 . 1.JPG" alt="Photo 4">
+                    <img src="PARAPLUIE 1.JPG" alt="Photo 4">
                 </a>
             </div>
             
-            <!-- Photo 5 -->
             <div class="carousel-item">
                 <a href="page5.html">
-                    <img src="YEOUIDO ECOLOGIC PARK 1.JPG" alt="Photo 5">
+                    <img src="DDP 1.jpg" alt="Photo 5">
                 </a>
             </div>
             
-            <!-- Photo 6 -->
             <div class="carousel-item">
                 <a href="page6.html">
-                    <img src="SEOUL FOREST PART 2 . 1.JPG" alt="Photo 6">
+                    <img src="NAKSONGDAE 1" alt="Photo 6">
                 </a>
             </div>
 
