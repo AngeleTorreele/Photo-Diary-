@@ -2,10 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Journal Photo - Multi-Ambiances</title>
+    <title>Mon Journal Photo - Minimaliste</title>
     <style>
         /* ==========================================================
-           1. STYLES GÉNÉRAUX & CURSEURS SUR-MESURE
+           1. STYLES GÉNÉRAUX & FOND BLANC
            ========================================================== */
         body {
             margin: 0;
@@ -15,78 +15,20 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            background-color: #050714;
+            background-color: #ffffff;
             transition: background 0.5s ease;
+            cursor: default;
         }
 
-        /* --- AMBIANCE 1 : BLEU NUIT ÉTOILÉ (Curseur Étoile SVG) --- */
-        body.theme-bleu {
-            background-color: #050714;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ffffff' stroke='%238ab4f8' stroke-width='1'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"), auto;
-        }
-        body.theme-bleu::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, rgba(138, 180, 248, 0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 150px 120px, rgba(197, 138, 248, 0.8), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 200px 200px, #ffffff, rgba(0,0,0,0));
-            background-size: 350px 350px;
-            opacity: 0.9;
-            animation: scintillementEau 2s infinite alternate ease-in-out;
-            z-index: 0;
-            pointer-events: none;
-        }
-        body.theme-bleu .carousel-item {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(138, 180, 248, 0.25);
-        }
-
-        /* --- AMBIANCE 2 : GRIS TRÈS FONCÉ (Curseur Bonhomme SVG) --- */
-        body.theme-beton {
-            background-color: #242629; /* Gris très foncé, élégant et profond */
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ffffff' stroke='%23333333' stroke-width='1'><path d='M12 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 10c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z'/></svg>"), auto;
-        }
-        body.theme-beton .carousel-item {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 255, 255, 0.1);
-        }
-
-        /* --- AMBIANCE 3 : VERT ÉQUILIBRÉ & DOUX (Curseur Feuille SVG) --- */
-        body.theme-feerique {
-            background-color: #d6e8d1; /* Vert présent, doux, légèrement moins jaune */
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='%23556b2f' stroke='%23eaf4ed' stroke-width='1'><path d='M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8 0 2.21.89 4.2 2.34 5.65L4 20h3.35l2.35-2.35C11.15 18.11 11.57 18.2 12 18.2c4.42 0 8-3.58 8-8 0-2.21-.9-4.2-2.35-5.65zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z'/></svg>"), auto;
-        }
-        body.theme-feerique .carousel-item {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 15px rgba(85, 107, 47, 0.3);
-        }
-
-        /* --- AMBIANCE 4 : CIEL TEXTURÉ NUAGE (Curseur Nuage SVG) --- */
+        body.theme-bleu,
+        body.theme-beton,
+        body.theme-feerique,
         body.theme-ciel {
-            background-color: #6294d1;
-            background-image: 
-                radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.6) 0%, transparent 45%),
-                radial-gradient(circle at 70% 60%, rgba(200, 225, 255, 0.5) 0%, transparent 50%),
-                radial-gradient(circle at 10% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 40%);
-            background-size: 120% 120%;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ffffff' stroke='%236294d1' stroke-width='1'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>"), auto;
-        }
-        body.theme-ciel .carousel-item {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Effet scintillement doux pour le ciel étoilé */
-        @keyframes scintillementEau {
-            0% { opacity: 0.2; filter: brightness(0.6); }
-            50% { opacity: 1; filter: brightness(1.5); }
-            100% { opacity: 0.3; filter: brightness(0.7); }
+            background-color: #ffffff;
         }
 
         /* ==========================================================
-           2. LES FLÈCHES EN TEXTURE DE CRAIE BLANCHE
+           2. LES FLÈCHES DE NAVIGATION
            ========================================================== */
         .nav-arrow {
             position: absolute;
@@ -94,27 +36,26 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #ffffff;
-            font-size: 4rem;
+            color: #222222;
+            font-size: 3rem;
             cursor: pointer;
             z-index: 10;
-            opacity: 0.75;
+            opacity: 0.4;
             transition: opacity 0.3s, transform 0.3s;
-            font-family: 'Courier New', Courier, monospace;
-            text-shadow: 3px 3px 8px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.5);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
             user-select: none;
         }
 
         .nav-arrow:hover {
             opacity: 1;
-            transform: translateY(-50%) scale(1.15);
+            transform: translateY(-50%) scale(1.1);
         }
 
-        #prevBtn { left: 50px; }
-        #nextBtn { right: 50px; }
+        #prevBtn { left: 40px; }
+        #nextBtn { right: 40px; }
 
         /* ==========================================================
-           3. LA SCÈNE 3D ET LA ROUE
+           3. LA SCÈNE 3D ET LA ROUE (Effet de glissement & superposition)
            ========================================================== */
         .carousel-stage {
             perspective: 1600px;
@@ -127,11 +68,11 @@
         }
 
         .carousel {
-            width: 320px;  
-            height: 240px; 
+            width: 360px;  
+            height: 260px; 
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.15s ease-out;
         }
 
         .carousel-item {
@@ -139,11 +80,19 @@
             width: 100%;
             height: 100%;
             border: none;
-            border-radius: 0px; /* Bords carrés */
+            border-radius: 0px; /* Coins strictement carrés */
             overflow: hidden;
-            background-color: #1a1a1a;
+            background-color: #f0f0f0;
             backface-visibility: hidden;
-            transition: box-shadow 0.5s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            opacity: 0.2; /* Transparence pour les photos en arrière-plan */
+            transition: opacity 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* La photo principale (face avant) */
+        .carousel-item.active {
+            opacity: 1;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
         }
 
         .carousel-item a {
@@ -160,11 +109,14 @@
             display: block;
         }
 
-        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(420px); }
-        .carousel-item:nth-child(2) { transform: rotateY(72deg) translateZ(420px); }
-        .carousel-item:nth-child(3) { transform: rotateY(144deg) translateZ(420px); }
-        .carousel-item:nth-child(4) { transform: rotateY(216deg) translateZ(420px); }
-        .carousel-item:nth-child(5) { transform: rotateY(288deg) translateZ(420px); }
+        /* MODIFICATION POUR LA SUPERPOSITION / GLISSEMENT :
+           On réduit l'angle (par exemple 45° au lieu de 72°) et on rapproche le translateZ 
+           pour que les images se chevauchent de manière fluide. */
+        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
+        .carousel-item:nth-child(2) { transform: rotateY(45deg) translateZ(280px); }
+        .carousel-item:nth-child(3) { transform: rotateY(90deg) translateZ(280px); }
+        .carousel-item:nth-child(4) { transform: rotateY(135deg) translateZ(280px); }
+        .carousel-item:nth-child(5) { transform: rotateY(180deg) translateZ(280px); }
     </style>
 </head>
 <body class="theme-bleu">
@@ -193,7 +145,7 @@
                 { img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-5.html" }
             ],
             'theme-feerique': [
-                { img: "SAULE PLEUREUR 1.JPG", link: "fee.html" },
+                { img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-1.html" },
                 { img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-2.html" },
                 { img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-3.html" },
                 { img: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-4.html" },
@@ -210,10 +162,32 @@
 
         let currentAngle = 0;
         const carousel = document.getElementById('carousel');
+        const itemsCount = 5;
+        const angleStep = 45; // Modifié pour correspondre au pas de rotation des cartes
+
+        function updateActiveCard() {
+            const items = carousel.querySelectorAll('.carousel-item');
+            let normalizedAngle = (currentAngle % 360);
+            if (normalizedAngle < 0) normalizedAngle += 360;
+
+            items.forEach((item, index) => {
+                let itemAngle = (index * angleStep) % 360;
+                let diff = Math.abs(normalizedAngle - itemAngle);
+                
+                if (diff > 180) diff = 360 - diff;
+
+                if (diff < angleStep / 2) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
 
         window.addEventListener('wheel', (event) => {
             currentAngle += event.deltaY * 0.35; 
             carousel.style.transform = `rotateY(${currentAngle}deg)`;
+            updateActiveCard();
         });
 
         const themes = ['theme-bleu', 'theme-beton', 'theme-feerique', 'theme-ciel'];
@@ -233,6 +207,9 @@
                 `;
                 carousel.appendChild(div);
             });
+            currentAngle = 0;
+            carousel.style.transform = `rotateY(${currentAngle}deg)`;
+            updateActiveCard();
         }
 
         function changeTheme(direction) {
