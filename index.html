@@ -2,256 +2,36 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Journal Photo - Minimaliste</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            background-color: #ffffff;
-            cursor: default;
-        }
-
-        .nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #222222;
-            font-size: 3rem;
-            cursor: pointer;
-            z-index: 1000;
-            opacity: 0.4;
-            transition: opacity 0.3s, transform 0.3s;
-            user-select: none;
-        }
-
-        .nav-arrow:hover {
-            opacity: 1;
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        #prevBtn { left: 40px; }
-        #nextBtn { right: 40px; }
-
-        .carousel-stage {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .carousel {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 0;
-            height: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .carousel-item {
-            position: absolute;
-            width: 320px;  
-            height: 220px; 
-            margin-top: -110px; /* Moitié de la hauteur pour centrer verticalement */
-            margin-left: -160px; /* Moitié de la largeur pour centrer horizontalement */
-            border: none;
-            border-radius: 0px; /* Coins carrés */
-            overflow: hidden;
-            background-color: #fefefe;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, box-shadow 0.6s ease;
-        }
-
-        .carousel-item a {
-            display: block;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .slider-controls {
-            position: absolute;
-            bottom: 30px;
-            display: flex;
-            gap: 20px;
-            z-index: 1000;
-        }
-
-        .slider-btn {
-            background: none;
-            border: 1px solid #cccccc;
-            color: #333;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .slider-btn:hover {
-            border-color: #222;
-            background-color: #222;
-            color: #fff;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrousel 2D Interactif</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-bleu">
+<body>
 
-    <button class="nav-arrow" id="prevBtn">&larr;</button>
-    <button class="nav-arrow" id="nextBtn">&rarr;</button>
-
-    <div class="carousel-stage">
-        <div class="carousel" id="carousel"></div>
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <!-- Chaque image est cliquable et pointe vers sa propre page -->
+            <div class="carousel-item">
+                <a href="page1.html"><img src="https://picsum.photos/id/1015/600/450" alt="Photo 1"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="page2.html"><img src="https://picsum.photos/id/1016/600/450" alt="Photo 2"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="page3.html"><img src="https://picsum.photos/id/1018/600/450" alt="Photo 3"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="page4.html"><img src="https://picsum.photos/id/1020/600/450" alt="Photo 4"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="page5.html"><img src="https://picsum.photos/id/1024/600/450" alt="Photo 5"></a>
+            </div>
+            <div class="carousel-item">
+                <a href="page6.html"><img src="https://picsum.photos/id/1025/600/450" alt="Photo 6"></a>
+            </div>
+        </div>
     </div>
 
-    <div class="slider-controls">
-        <button class="slider-btn" id="slidePrev">&larr; Précédent</button>
-        <button class="slider-btn" id="slideNext">Suivant &rarr;</button>
-    </div>
-
-    <script>
-        const themeData = {
-            'theme-bleu': [
-                { img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&h=450&auto=format&fit=crop", link: "fait.html" },
-                { img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-2.html" },
-                { img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-3.html" },
-                { img: "https://images.unsplash.com/photo-1426604966848-d7adac902bff?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-4.html" },
-                { img: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-5.html" }
-            ],
-            'theme-beton': [
-                { img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-1.html" },
-                { img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-2.html" },
-                { img: "https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-3.html" },
-                { img: "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-4.html" },
-                { img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-5.html" }
-            ],
-            'theme-feerique': [
-                { img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-1.html" },
-                { img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-2.html" },
-                { img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-3.html" },
-                { img: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-4.html" },
-                { img: "https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&w=600&h=450&auto=format&fit=crop", link: "fee-5.html" }
-            ],
-            'theme-ciel': [
-                { img: "https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-1.html" },
-                { img: "https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-2.html" },
-                { img: "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-3.html" },
-                { img: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-4.html" },
-                { img: "https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-5.html" }
-            ]
-        };
-
-        let currentIndex = 0;
-        const carousel = document.getElementById('carousel');
-        const themes = ['theme-bleu', 'theme-beton', 'theme-feerique', 'theme-ciel'];
-        let currentThemeIndex = 0;
-        const body = document.body;
-
-        function updateCarouselPhotos(themeName) {
-            carousel.innerHTML = ""; 
-            const photos = themeData[themeName];
-            photos.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'carousel-item';
-                div.innerHTML = `
-                    <a href="${item.link}">
-                        <img src="${item.img}" alt="Photo">
-                    </a>
-                `;
-                carousel.appendChild(div);
-            });
-            currentIndex = 0;
-            updateSliderPosition();
-        }
-
-        function updateSliderPosition() {
-            const items = carousel.querySelectorAll('.carousel-item');
-            if (items.length === 0) return;
-
-            // Déplace le conteneur global pour que l'élément actif soit pile au centre
-            const spacing = 110; // Réduit pour que les images se superposent étroitement
-            carousel.style.transform = `translateX(${-currentIndex * spacing}px)`;
-
-            items.forEach((item, index) => {
-                const diff = index - currentIndex;
-                const absDiff = Math.abs(diff);
-
-                // Position horizontale relative pour chaque carte par rapport au centre
-                const xPos = diff * 110; 
-
-                if (diff === 0) {
-                    // PHOTO CENTRALE : Taille réelle, nette, au premier plan
-                    item.style.transform = `translateX(${xPos}px) scale(1)`;
-                    item.style.opacity = '1';
-                    item.style.zIndex = '100';
-                    item.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.15)';
-                } else {
-                    // PHOTOS AUTOUR : Dégressives en taille et opacité, se glissant sous la principale
-                    let scale = Math.max(0.4, 1 - (absDiff * 0.18));
-                    let opacity = Math.max(0.15, 1 - (absDiff * 0.3));
-
-                    item.style.transform = `translateX(${xPos}px) scale(${scale})`;
-                    item.style.opacity = `${opacity}`;
-                    item.style.zIndex = `${100 - absDiff * 10}`;
-                    item.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.05)';
-                }
-            });
-        }
-
-        function slidePhotos(direction) {
-            const currentTheme = themes[currentThemeIndex];
-            const maxIndex = themeData[currentTheme].length - 1;
-            
-            currentIndex += direction;
-            if (currentIndex < 0) currentIndex = 0;
-            if (currentIndex > maxIndex) currentIndex = maxIndex;
-
-            updateSliderPosition();
-        }
-
-        document.getElementById('slideNext').addEventListener('click', () => slidePhotos(1));
-        document.getElementById('slidePrev').addEventListener('click', () => slidePhotos(-1));
-
-        window.addEventListener('wheel', (event) => {
-            if (event.deltaY > 0) {
-                slidePhotos(1);
-            } else {
-                slidePhotos(-1);
-            }
-        }, { passive: true });
-
-        function changeTheme(direction) {
-            body.classList.remove(themes[currentThemeIndex]);
-            currentThemeIndex = (currentThemeIndex + direction + themes.length) % themes.length;
-            const newTheme = themes[currentThemeIndex];
-            
-            body.classList.add(newTheme);
-            updateCarouselPhotos(newTheme);
-        }
-
-        document.getElementById('nextBtn').addEventListener('click', () => changeTheme(1));
-        document.getElementById('prevBtn').addEventListener('click', () => changeTheme(-1));
-
-        updateCarouselPhotos(themes[0]);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
