@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Journal Photo</title>
+    <style>
+        /* ==========================================================
+           1. LE STYLE GÉNÉRAL ET LE FOND
+           ========================================================== */
+        body {
+            /* CHANGEMENT DE COULEUR DE FOND : Modifie le code hexadécimal ici si tu veux */
+            background-color: #0b0b0b; 
+            margin: 0;
+            overflow: hidden; /* Bloque les barres de défilement de la page */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ==========================================================
+           2. LA SCÈNE 3D ET LA ROUE
+           ========================================================== */
+        .carousel-stage {
+            perspective: 1600px; /* Profondeur de la 3D */
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel {
+            width: 240px;  /* Largeur de chaque photo */
+            height: 340px; /* Hauteur de chaque photo */
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out; /* Fluidité du mouvement */
+        }
+
+        /* ==========================================================
+           3. L'ASPECT DES PHOTOS (Surépaisseur & Coins arrondis)
+           ========================================================== */
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            
+            /* CADRE ET BORDARDS ARRONDIS : Modifie les pixels ci-dessous */
+            border: 3px solid #ffffff;
+            border-radius: 8px; /* Arrondit légèrement les coins */
+            
+            /* EFFET SURÉPAISSEUR / 3D : Ombre portée pour donner du relief */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 
+                        0 0 20px rgba(255, 255, 255, 0.1);
+            
+            overflow: hidden;
+            background-color: #1a1a1a;
+            backface-visibility: hidden; /* Cache l'arrière des images quand elles tournent */
+        }
+
+        /* Pour que le lien HTML prenne toute la place de la boîte */
+        .carousel-item a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Remplit le cadre sans déformer l'image */
+            display: block;
+        }
+
+        /* ==========================================================
+           4. POSITIONNEMENT DES PHOTOS DANS LE CERCLE (La Roue)
+           ========================================================== */
+        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(350px); }
+        .carousel-item:nth-child(2) { transform: rotateY(60deg) translateZ(350px); }
+        .carousel-item:nth-child(3) { transform: rotateY(120deg) translateZ(350px); }
+        .carousel-item:nth-child(4) { transform: rotateY(180deg) translateZ(350px); }
+        .carousel-item:nth-child(5) { transform: rotateY(240deg) translateZ(350px); }
+        .carousel-item:nth-child(6) { transform: rotateY(300deg) translateZ(350px); }
+    </style>
+</head>
+<body>
+
+    <div class="carousel-stage">
+        <div class="carousel">
+            
+            <!-- ==========================================================
+               5. TES IMAGES ET LEURS LIENS VERS D'AUTRES PAGES
+               ========================================================== -->
+            
+            <!-- Photo 1 : Clique dessus pour aller vers "page1.html" -->
+            <div class="carousel-item">
+                <a href="page1.html">
+                    <img src="YEOUIDO ECOLOGIC PARK 1.JPG" alt="Photo 1">
+                </a>
+            </div>
+            
+            <!-- Photo 2 : Clique dessus pour aller vers "page2.html" -->
+            <div class="carousel-item">
+                <a href="page2.html">
+                    <img src="DDP 1.jpg" alt="Photo 2">
+                </a>
+            </div>
+            
+            <!-- Photo 3 -->
+            <div class="carousel-item">
+                <a href="page3.html">
+                    <img src="PARAPLUIE 1.JPG" alt="Photo 3">
+                </a>
+            </div>
+            
+            <!-- Photo 4 -->
+            <div class="carousel-item">
+                <a href="page4.html">
+                    <img src="SEOUL FOREST PART 1 . 1.JPG" alt="Photo 4">
+                </a>
+            </div>
+            
+            <!-- Photo 5 -->
+            <div class="carousel-item">
+                <a href="page5.html">
+                    <img src="YEOUIDO ECOLOGIC PARK 1.JPG" alt="Photo 5">
+                </a>
+            </div>
+            
+            <!-- Photo 6 -->
+            <div class="carousel-item">
+                <a href="page6.html">
+                    <img src="SEOUL FOREST PART 2 . 1.JPG" alt="Photo 6">
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================
+           6. LE MOTEUR JS (Réaction au scroll de la souris)
+           ========================================================== */
+        let currentAngle = 0;
+        const carousel = document.querySelector('.carousel');
+
+        window.addEventListener('wheel', (event) => {
+            currentAngle += event.deltaY * 0.35; 
+            carousel.style.transform = `rotateY(${currentAngle}deg)`;
+        });
+    </script>
+</body>
+</html>
