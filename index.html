@@ -17,7 +17,7 @@
             position: relative;
             background-color: #ffffff;
             transition: background 0.5s ease;
-            cursor: default; /* Curseur classique */
+            cursor: default;
         }
 
         body.theme-bleu,
@@ -55,7 +55,7 @@
         #nextBtn { right: 40px; }
 
         /* ==========================================================
-           3. LE CONTENEUR DU SLIDER LINÉAIRE (Zoom & Superposition)
+           3. LE CONTENEUR DU SLIDER (Superposition & Dégressif)
            ========================================================== */
         .carousel-stage {
             width: 100%;
@@ -70,31 +70,21 @@
         .carousel {
             display: flex;
             align-items: center;
-            gap: -80px; /* Espace négatif pour forcer la superposition rapprochée */
             position: absolute;
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .carousel-item {
-            width: 300px;  /* Format légèrement rapetissé */
-            height: 210px; 
+            width: 320px;  
+            height: 220px; 
             flex-shrink: 0;
             border: none;
-            border-radius: 6px; /* Tout petit arrondi discret */
+            border-radius: 0px; /* Coins strictement carrés */
             overflow: hidden;
-            background-color: #f0f0f0;
-            opacity: 0.35; /* Transparence pour les côtés */
-            transform: scale(0.75); /* Plus petites sur les côtés pour l'effet de zoom */
-            transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
-            z-index: 1;
-        }
-
-        /* La photo centrale (active) : zoomée à 100%, nette, au premier plan */
-        .carousel-item.active {
-            opacity: 1;
-            transform: scale(1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
-            z-index: 5; /* Au-dessus des autres pour se superposer proprement */
+            background-color: #fefefe;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            /* Les styles de base (taille, opacité, position) sont calculés dynamiquement en JS pour un dégressif fluide */
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, box-shadow 0.5s ease;
         }
 
         .carousel-item a {
@@ -117,7 +107,7 @@
             bottom: 40px;
             display: flex;
             gap: 20px;
-            z-index: 10;
+            z-index: 100;
         }
 
         .slider-btn {
@@ -212,19 +202,38 @@
             const items = carousel.querySelectorAll('.carousel-item');
             if (items.length === 0) return;
 
-            const itemWidth = 300; // Largeur de la photo
-            const overlap = 90;    // Espace de chevauchement entre les photos
+            const baseWidth = 320;
             const containerWidth = window.innerWidth;
             
-            // Centrer l'élément actif
-            const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * (itemWidth - overlap));
+            // Calculer la position globale pour centrer la photo active
+            const offset = (containerWidth / 2) - (baseWidth / 2) - (currentIndex * 190);
             carousel.style.transform = `translateX(${offset}px)`;
 
+            // Appliquer dynamiquement la taille dégressive, l'opacité et l'ordre de superposition (z-index) selon la distance par rapport au centre
             items.forEach((item, index) => {
-                if (index === currentIndex) {
-                    item.classList.add('active');
+                const distance = Math.abs(index - currentIndex);
+                
+                if (distance === 0) {
+                    // Photo principale (au centre) : taille normale, nette, au premier plan
+                    item.style.transform = 'scale(1)';
+                    item.style.opacity = '1';
+                    item.style.zIndex = '50';
+                    item.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.15)';
+                } else if (distance === 1) {
+                    // Photos adjacentes directes : un peu plus petites, transparentes
+                    item.style.transform = 'scale(0.82)';
+                    item.style.opacity = '0.6';
+                    item.style.zIndex = '30';
+                    item.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.08)';
                 } else {
-                    item.classList.remove('active');
+                    // Photos plus éloignées : encore plus petites et transparentes sur les côtés
+                    let scale = Math.max(0.5, 1 - (distance * 0.18));
+                    let opacity = Math.max(0.15, 1 - (distance * 0.3));
+                    item.style.transform = `scale(${scale})`;
+                    item.style.opacity = `${opacity}`;
+                    // Gestion de la superposition pour que les photos se glissent logiquement sous les autres
+                    item.style.zIndex = `${50 - distance * 10}`;
+                    item.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.04)';
                 }
             });
         }
