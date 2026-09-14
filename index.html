@@ -5,7 +5,7 @@
     <title>Mon Journal Photo - Multi-Ambiances</title>
     <style>
         /* ==========================================================
-           1. STYLES GÉNÉRAUX & VRAIS CURSEURS VECTORIELS SUR-MESURE
+           1. STYLES GÉNÉRAUX & CURSEURS SUR-MESURE
            ========================================================== */
         body {
             margin: 0;
@@ -16,11 +16,6 @@
             align-items: center;
             position: relative;
             transition: background 0.8s ease;
-        }
-
-        /* Force l'affichage du curseur sur absolument TOUS les éléments de la page */
-        body *, body *:before, body *:after {
-            cursor: inherit;
         }
 
         /* --- AMBIANCE 1 : BLEU NUIT ÉTOILÉ (Curseur Étoile SVG) --- */
@@ -34,16 +29,14 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(3px 3px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 70px 120px, #8ab4f8, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 140px 50px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 210px 180px, #c58af8, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 280px 90px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 350px 250px, #8ab4f8, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 420px 140px, #ffffff, rgba(0,0,0,0));
-            background-size: 200px 200px;
-            opacity: 1;
-            animation: ultraScintillement 0.6s infinite alternate;
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, rgba(138, 180, 248, 0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 150px 120px, rgba(197, 138, 248, 0.8), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 200px, #ffffff, rgba(0,0,0,0));
+            background-size: 350px 350px;
+            opacity: 0.9;
+            animation: scintillementPaillettes 1.5s infinite alternate;
             z-index: 0;
             pointer-events: none;
         }
@@ -67,17 +60,19 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- AMBIANCE 3 : VERT POMME & ROSE MARBRÉ (Curseur Fée SVG) --- */
+        /* --- AMBIANCE 3 : VERT POMME & ROSE INTENSE MARBRÉ (Curseur Fée SVG) --- */
         body.theme-feerique {
-            background-color: #d1f4e0;
+            background-color: #2ecc71;
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(244, 194, 215, 0.7) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(144, 238, 144, 0.6) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8) 0%, transparent 60%),
-                radial-gradient(circle at 90% 10%, rgba(255, 182, 193, 0.6) 0%, transparent 40%);
-            background-size: 150% 150%;
-            animation: marbrageMouvant 12s ease infinite alternate;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ff69b4' stroke='%2376ff03' stroke-width='1'><path d='M12 2l2.4 6.8h7.2l-5.8 4.2 2.2 6.8-5.8-4.2-5.8 4.2 2.2-6.8-5.8-4.2h7.2z'/></svg>"), auto;
+                radial-gradient(circle at 15% 25%, rgba(255, 20, 147, 0.9) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(46, 204, 113, 0.95) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(255, 105, 180, 0.85) 0%, transparent 55%),
+                radial-gradient(circle at 80% 20%, rgba(100, 255, 150, 0.9) 0%, transparent 40%),
+                radial-gradient(circle at 30% 70%, rgba(255, 0, 127, 0.7) 0%, transparent 50%);
+            background-size: 180% 180%;
+            animation: marbrageMouvant 10s ease infinite alternate;
+            /* Curseur de petite fée vectoriel */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='%23ff1493' stroke='%23ffffff' stroke-width='1'><path d='M12 2C10.5 4 8 6 8 9c0 2 1.5 3.5 3 4l-3 7h2l2-4 2 4h2l-3-7c1.5-.5 3-2 3-4 0-3-2.5-5-4-7zm-5 5c-.8 0-1.5.7-1.5 1.5S6.2 10 7 10s1.5-.7 1.5-1.5S7.8 7 7 s0zm10 0c-.8 0-1.5.7-1.5 1.5S16.2 10 17 10s1.5-.7 1.5-1.5S17.8 7 17 7z'/></svg>"), auto;
         }
         @keyframes marbrageMouvant {
             0% { background-position: 0% 0%; }
@@ -89,20 +84,18 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(4px 4px at 30px 50px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 90px 140px, #76ff03, rgba(0,0,0,0)),
-                radial-gradient(4px 4px at 170px 80px, #ff69b4, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 240px 220px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(4px 4px at 310px 110px, #76ff03, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 380px 270px, #ff69b4, rgba(0,0,0,0));
-            background-size: 180px 180px;
-            opacity: 1;
-            animation: ultraScintillement 0.5s infinite alternate;
+                radial-gradient(3px 3px at 40px 60px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 150px 180px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 250px 90px, #ff1493, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 320px 280px, #ffffff, rgba(0,0,0,0));
+            background-size: 250px 250px;
+            opacity: 0.95;
+            animation: scintillementPaillettes 1.5s infinite alternate;
             z-index: 0;
             pointer-events: none;
         }
         body.theme-feerique .carousel-item {
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(118, 255, 3, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 20, 147, 0.6);
         }
 
         /* --- AMBIANCE 4 : CIEL TEXTURÉ NUAGE (Curseur Nuage SVG) --- */
@@ -120,10 +113,10 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 255, 255, 0.5);
         }
 
-        /* Animation ultra-scintillante pour un effet paillettes maximal */
-        @keyframes ultraScintillement {
-            0% { opacity: 0.2; transform: scale(0.95); filter: brightness(0.6); }
-            100% { opacity: 1; transform: scale(1.08); filter: brightness(1.8); }
+        @keyframes scintillementPaillettes {
+            0% { opacity: 0.3; transform: scale(0.98); filter: brightness(0.8); }
+            50% { opacity: 1; transform: scale(1.02); filter: brightness(1.4); }
+            100% { opacity: 0.4; transform: scale(1); filter: brightness(0.9); }
         }
 
         /* ==========================================================
@@ -137,7 +130,7 @@
             border: none;
             color: #ffffff;
             font-size: 4rem;
-            cursor: pointer;
+            cursor: pointer; /* Remet la petite main classique au survol */
             z-index: 10;
             opacity: 0.75;
             transition: opacity 0.3s, transform 0.3s;
@@ -191,6 +184,7 @@
             display: block;
             width: 100%;
             height: 100%;
+            cursor: pointer; /* Remet la petite main classique au survol des photos */
         }
 
         .carousel-item img {
