@@ -3,65 +3,51 @@ const totalItems = items.length;
 let currentIndex = 0;
 
 function updateCarousel() {
-    // Si on est sur téléphone (écran < 768px), on ne fait rien (les CSS gèrent l'empilement)
-    if (window.innerWidth <= 768) {
-        items.forEach(item => {
-            item.style.transform = 'none';
-            item.style.opacity = '1';
-            item.style.zIndex = '1';
-            item.style.pointerEvents = 'auto';
-        });
-        return;
-    }
+    // Ne s'exécute que sur ordinateur (quand le mode vertical mobile n'est pas actif)
+    if (window.innerWidth < 768) return;
 
-    const spacing = 250;
+    const spacing = 350;
 
     items.forEach((item, index) => {
-        let offset = (index - currentIndex) % totalItems;
-        if (offset > totalItems / 2) offset -= totalItems;
-        if (offset < -totalItems / 2) offset += totalItems;
-
-        const xPos = offset * spacing;
+        let offset = index - currentIndex;
+        const pos = offset * spacing;
         const absOffset = Math.abs(offset);
-        const scale = Math.max(0.3, 1 - absOffset * 0.25);
-        const opacity = Math.max(0, 1 - absOffset * 0.4);
-        const zIndex = 10 - Math.round(absOffset);
 
-        item.style.transform = `translateX(${xPos}px) scale(${scale})`;
+        const scale = Math.max(0.4, 1 - absOffset * 0.25);
+        const opacity = absOffset > 2 ? 0 : Math.max(0, 1 - absOffset * 0.35);
+        const zIndex = totalItems - absOffset;
+
+        item.style.transform = `translateX(${pos}px) scale(${scale})`;
         item.style.opacity = opacity;
         item.style.zIndex = zIndex;
-        item.style.pointerEvents = absOffset > 1.5 ? 'none' : 'auto';
+        item.style.pointerEvents = absOffset === 0 ? 'auto' : 'none';
     });
 }
 
-// 1. Roulette de la souris (uniquement sur ordi)
+// 1. Roulette de la souris (Ordinateur uniquement)
 window.addEventListener('wheel', (e) => {
-    if (window.innerWidth <= 768) return;
+    if (window.innerWidth < 768) return; // Laisse le téléphone scroller normalement
     e.preventDefault();
-    if (e.deltaY > 0) {
-        currentIndex += 0.15;
-    } else {
-        currentIndex -= 0.15;
+    if (e.deltaY > 0 && currentIndex < totalItems - 1) {
+        currentIndex++;
+    } else if (e.deltaY < 0 && currentIndex > 0) {
+        currentIndex--;
     }
     updateCarousel();
 }, { passive: false });
 
-// 2. Flèches du clavier (uniquement sur ordi)
+// 2. Navigation au clavier
 window.addEventListener('keydown', (e) => {
-    if (window.innerWidth <= 768) return;
-    if (e.key === 'ArrowRight') {
-        currentIndex = Math.floor(currentIndex) + 1;
+    if (window.innerWidth < 768) return;
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && currentIndex < totalItems - 1) {
+        currentIndex++;
         updateCarousel();
-    } else if (e.key === 'ArrowLeft') {
-        currentIndex = Math.ceil(currentIndex) - 1;
+    } else if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && currentIndex > 0) {
+        currentIndex--;
         updateCarousel();
     }
 });
 
-// 3. Réinitialise proprement si on redimensionne la fenêtre
-window.addEventListener('resize', () => {
-    updateCarousel();
-});
-
-// Initialisation au chargement
+// Lancement initial
+window.addEventListener('resize', updateCarousel);
 updateCarousel();
