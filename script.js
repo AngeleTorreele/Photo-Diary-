@@ -31,7 +31,7 @@ function updateCarousel() {
 
         item.style.opacity = opacity;
         item.style.zIndex = zIndex;
-        item.style.pointerEvents = absOffset === 0 ? 'auto' : 'none';
+        item.style.pointerEvents = (absOffset < 0.5) ? 'auto' : 'none';
     });
 }
 
