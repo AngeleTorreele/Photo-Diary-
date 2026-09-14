@@ -17,7 +17,7 @@
             position: relative;
             background-color: #ffffff;
             transition: background 0.5s ease;
-            cursor: default;
+            cursor: default; /* Curseur classique */
         }
 
         body.theme-bleu,
@@ -28,7 +28,7 @@
         }
 
         /* ==========================================================
-           2. LES FLÈCHES DE NAVIGATION
+           2. LES FLÈCHES DE NAVIGATION POUR LES THÈMES
            ========================================================== */
         .nav-arrow {
             position: absolute;
@@ -55,44 +55,44 @@
         #nextBtn { right: 40px; }
 
         /* ==========================================================
-           3. LA SCÈNE 3D ET LA ROUE (Effet de glissement & superposition)
+           3. LE CONTENEUR DU SLIDER LINÉAIRE (Effet Glissement)
            ========================================================== */
         .carousel-stage {
-            perspective: 1600px;
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1;
+            overflow: hidden;
+            position: relative;
         }
 
         .carousel {
-            width: 360px;  
-            height: 260px; 
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.15s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 30px; /* Espace entre les images pour voir le glissement */
+            position: absolute;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Glissement fluide */
         }
 
         .carousel-item {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 360px;  
+            height: 260px; 
+            flex-shrink: 0;
             border: none;
             border-radius: 0px; /* Coins strictement carrés */
             overflow: hidden;
             background-color: #f0f0f0;
-            backface-visibility: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            opacity: 0.2; /* Transparence pour les photos en arrière-plan */
-            transition: opacity 0.4s ease, box-shadow 0.4s ease;
+            opacity: 0.25; /* Transparence pour les photos sur les côtés */
+            transform: scale(0.9); /* Légèrement plus petites sur les côtés */
+            transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
         }
 
-        /* La photo principale (face avant) */
+        /* La photo centrale (active) est nette, au premier plan et en taille normale */
         .carousel-item.active {
             opacity: 1;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            transform: scale(1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
         }
 
         .carousel-item a {
@@ -109,23 +109,46 @@
             display: block;
         }
 
-        /* MODIFICATION POUR LA SUPERPOSITION / GLISSEMENT :
-           On réduit l'angle (par exemple 45° au lieu de 72°) et on rapproche le translateZ 
-           pour que les images se chevauchent de manière fluide. */
-        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
-        .carousel-item:nth-child(2) { transform: rotateY(45deg) translateZ(280px); }
-        .carousel-item:nth-child(3) { transform: rotateY(90deg) translateZ(280px); }
-        .carousel-item:nth-child(4) { transform: rotateY(135deg) translateZ(280px); }
-        .carousel-item:nth-child(5) { transform: rotateY(180deg) translateZ(280px); }
+        /* Boutons de contrôle internes pour faire défiler les photos du thème */
+        .slider-controls {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .slider-btn {
+            background: none;
+            border: 1px solid #cccccc;
+            color: #333;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .slider-btn:hover {
+            border-color: #222;
+            background-color: #222;
+            color: #fff;
+        }
     </style>
 </head>
 <body class="theme-bleu">
 
+    <!-- Flèches pour changer de THÈME -->
     <button class="nav-arrow" id="prevBtn">&larr;</button>
     <button class="nav-arrow" id="nextBtn">&rarr;</button>
 
     <div class="carousel-stage">
         <div class="carousel" id="carousel"></div>
+    </div>
+
+    <!-- Petits boutons discrets pour défiler les photos du thème en cours -->
+    <div class="slider-controls">
+        <button class="slider-btn" id="slidePrev">&larr; Précédent</button>
+        <button class="slider-btn" id="slideNext">Suivant &rarr;</button>
     </div>
 
     <script>
@@ -160,36 +183,8 @@
             ]
         };
 
-        let currentAngle = 0;
+        let currentIndex = 0;
         const carousel = document.getElementById('carousel');
-        const itemsCount = 5;
-        const angleStep = 45; // Modifié pour correspondre au pas de rotation des cartes
-
-        function updateActiveCard() {
-            const items = carousel.querySelectorAll('.carousel-item');
-            let normalizedAngle = (currentAngle % 360);
-            if (normalizedAngle < 0) normalizedAngle += 360;
-
-            items.forEach((item, index) => {
-                let itemAngle = (index * angleStep) % 360;
-                let diff = Math.abs(normalizedAngle - itemAngle);
-                
-                if (diff > 180) diff = 360 - diff;
-
-                if (diff < angleStep / 2) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-        }
-
-        window.addEventListener('wheel', (event) => {
-            currentAngle += event.deltaY * 0.35; 
-            carousel.style.transform = `rotateY(${currentAngle}deg)`;
-            updateActiveCard();
-        });
-
         const themes = ['theme-bleu', 'theme-beton', 'theme-feerique', 'theme-ciel'];
         let currentThemeIndex = 0;
         const body = document.body;
@@ -207,11 +202,58 @@
                 `;
                 carousel.appendChild(div);
             });
-            currentAngle = 0;
-            carousel.style.transform = `rotateY(${currentAngle}deg)`;
-            updateActiveCard();
+            currentIndex = 0;
+            updateSliderPosition();
         }
 
+        function updateSliderPosition() {
+            const items = carousel.querySelectorAll('.carousel-item');
+            if (items.length === 0) return;
+
+            // Calculer le décalage pour centrer la photo active
+            const itemWidth = items[0].offsetWidth;
+            const gap = 30;
+            const containerWidth = window.innerWidth;
+            
+            // Position pour que l'élément `currentIndex` soit au milieu de l'écran
+            const offset = (containerWidth / 2) - (itemWidth / 2) - (currentIndex * (itemWidth + gap));
+            carousel.style.transform = `translateX(${offset}px)`;
+
+            // Gestion des classes active/transparence
+            items.forEach((item, index) => {
+                if (index === currentIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Faire défiler les photos (glissement) via les boutons du bas ou la molette
+        function slidePhotos(direction) {
+            const currentTheme = themes[currentThemeIndex];
+            const maxIndex = themeData[currentTheme].length - 1;
+            
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex > maxIndex) currentIndex = maxIndex;
+
+            updateSliderPosition();
+        }
+
+        document.getElementById('slideNext').addEventListener('click', () => slidePhotos(1));
+        document.getElementById('slidePrev').addEventListener('click', () => slidePhotos(-1));
+
+        // Molette de la souris pour glisser horizontalement entre les photos
+        window.addEventListener('wheel', (event) => {
+            if (event.deltaY > 0) {
+                slidePhotos(1);
+            } else {
+                slidePhotos(-1);
+            }
+        }, { passive: true });
+
+        // Changement de thème avec les flèches latérales de l'écran
         function changeTheme(direction) {
             body.classList.remove(themes[currentThemeIndex]);
             currentThemeIndex = (currentThemeIndex + direction + themes.length) % themes.length;
@@ -224,7 +266,9 @@
         document.getElementById('nextBtn').addEventListener('click', () => changeTheme(1));
         document.getElementById('prevBtn').addEventListener('click', () => changeTheme(-1));
 
+        // Initialisation
         updateCarouselPhotos(themes[0]);
+        window.addEventListener('resize', updateSliderPosition);
     </script>
 </body>
 </html>
