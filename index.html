@@ -39,7 +39,7 @@
             color: #222222;
             font-size: 3rem;
             cursor: pointer;
-            z-index: 100;
+            z-index: 1000;
             opacity: 0.4;
             transition: opacity 0.3s, transform 0.3s;
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -55,7 +55,7 @@
         #nextBtn { right: 40px; }
 
         /* ==========================================================
-           3. LE CONTENEUR DU SLIDER (Centrage & Superposition)
+           3. LE CONTENEUR DU SLIDER (Centré absolu)
            ========================================================== */
         .carousel-stage {
             width: 100%;
@@ -68,24 +68,28 @@
         }
 
         .carousel {
+            position: relative;
+            width: 0;
+            height: 0;
             display: flex;
+            justify-content: center;
             align-items: center;
-            position: absolute;
-            /* Transition fluide lors du glissement d'une photo à l'autre */
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
+        /* Chaque photo est positionnée dynamiquement par rapport au centre absolu */
         .carousel-item {
+            position: absolute;
             width: 320px;  
             height: 220px; 
-            flex-shrink: 0;
+            top: -110px; /* Moitié de la hauteur pour centrer parfaitement verticalement */
+            left: -160px; /* Moitié de la largeur pour centrer parfaitement horizontalement */
             border: none;
             border-radius: 0px; /* Coins strictement carrés */
             overflow: hidden;
             background-color: #fefefe;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-            /* Transition fluide pour la taille, l'opacité et l'ombre */
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, box-shadow 0.5s ease;
+            /* Animation fluide pour les déplacements, la taille et l'opacité */
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, left 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.6s ease;
         }
 
         .carousel-item a {
@@ -108,7 +112,7 @@
             bottom: 40px;
             display: flex;
             gap: 20px;
-            z-index: 100;
+            z-index: 1000;
         }
 
         .slider-btn {
@@ -185,9 +189,10 @@
         function updateCarouselPhotos(themeName) {
             carousel.innerHTML = ""; 
             const photos = themeData[themeName];
-            photos.forEach(item => {
+            photos.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'carousel-item';
+                div.dataset.index = index;
                 div.innerHTML = `
                     <a href="${item.link}">
                         <img src="${item.img}" alt="Photo de l'ambiance">
@@ -203,32 +208,34 @@
             const items = carousel.querySelectorAll('.carousel-item');
             if (items.length === 0) return;
 
-            const baseWidth = 320;
-            const containerWidth = window.innerWidth;
-            
-            // Calcule le décalage exact pour que la photo numéro `currentIndex` soit centrée à l'écran
-            const offset = (containerWidth / 2) - (baseWidth / 2) - (currentIndex * 180);
-            carousel.style.transform = `translateX(${offset}px)`;
-
-            // Ajuste l'échelle, l'opacité et l'ordre de superposition (z-index) selon la distance par rapport au centre
             items.forEach((item, index) => {
-                const distance = Math.abs(index - currentIndex);
+                const diff = index - currentIndex; // Distance par rapport à la photo active
                 
-                if (distance === 0) {
-                    // Photo active au centre : taille réelle, nette, au premier plan
-                    item.style.transform = 'scale(1)';
+                // Calcul de la position horizontale décalée (les photos se chevauchent en s'éloignant)
+                const spacing = 180; // Distance de décalage entre chaque centre de photo
+                const xOffset = diff * spacing;
+
+                if (diff === 0) {
+                    // PHOTO PRINCIPALE (CENTRE) : Pleine taille, nette, au premier plan
+                    item.style.transform = `translateX(${xOffset}px) scale(1)`;
                     item.style.opacity = '1';
-                    item.style.zIndex = '50';
+                    item.style.zIndex = '100';
                     item.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.15)';
+                    item.style.pointerEvents = 'auto';
                 } else {
-                    // Photos sur les côtés : dégressives en taille et en opacité, se glissant sous les autres
-                    let scale = Math.max(0.45, 1 - (distance * 0.2));
-                    let opacity = Math.max(0.2, 1 - (distance * 0.35));
-                    
-                    item.style.transform = `scale(${scale})`;
+                    // PHOTOS ENTOURANTES : Plus on s'éloigne, plus elles rapetissent et s'estompent
+                    const absDiff = Math.abs(diff);
+                    const scale = Math.max(0.4, 1 - (absDiff * 0.18));
+                    const opacity = Math.max(0.15, 1 - (absDiff * 0.3));
+
+                    item.style.transform = `translateX(${xOffset}px) scale(${scale})`;
                     item.style.opacity = `${opacity}`;
-                    item.style.zIndex = `${50 - distance * 10}`;
+                    // Gestion de l'empilement (les plus proches du centre passent par-dessus les plus lointaines)
+                    item.style.zIndex = `${100 - absDiff * 10}`;
                     item.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.05)';
+                    
+                    // Optionnel : Empêche de cliquer sur les photos trop lointaines si on veut privilégier la centrale
+                    item.style.pointerEvents = absDiff > 2 ? 'none' : 'auto';
                 }
             });
         }
@@ -268,7 +275,6 @@
         document.getElementById('prevBtn').addEventListener('click', () => changeTheme(-1));
 
         updateCarouselPhotos(themes[0]);
-        window.addEventListener('resize', updateSliderPosition);
     </script>
 </body>
 </html>
