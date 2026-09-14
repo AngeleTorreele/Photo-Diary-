@@ -15,7 +15,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            transition: background 0.8s ease;
+            background-color: #050714; /* Chargement direct sans effet bizarre */
         }
 
         /* --- AMBIANCE 1 : BLEU NUIT ÉTOILÉ (Curseur Étoile SVG) --- */
@@ -36,7 +36,7 @@
                 radial-gradient(2px 2px at 200px 200px, #ffffff, rgba(0,0,0,0));
             background-size: 350px 350px;
             opacity: 0.9;
-            animation: scintillementPaillettes 1.5s infinite alternate;
+            animation: scintillementEau 2s infinite alternate ease-in-out;
             z-index: 0;
             pointer-events: none;
         }
@@ -44,39 +44,34 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(138, 180, 248, 0.4);
         }
 
-        /* --- AMBIANCE 2 : BÉTON BRUT (Curseur Bonhomme SVG) --- */
+        /* --- AMBIANCE 2 : BÉTON BRUT ORGANIQUE (Curseur Bonhomme SVG) --- */
         body.theme-beton {
-            background-color: #55585d;
+            background-color: #6c7075;
             background-image: 
-                radial-gradient(circle at 30% 20%, #3f4246 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, #6e7278 0%, transparent 50%),
-                radial-gradient(circle at 50% 90%, #2f3236 0%, transparent 60%),
-                linear-gradient(45deg, rgba(0,0,0,0.15) 25%, transparent 25%),
-                linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%);
-            background-size: 100% 100%, 100% 100%, 100% 100%, 8px 8px, 8px 8px;
+                radial-gradient(circle at 20% 30%, rgba(40, 42, 45, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(140, 145, 150, 0.3) 0%, transparent 60%),
+                radial-gradient(circle at 50% 10%, rgba(50, 53, 56, 0.5) 0%, transparent 40%),
+                radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1px),
+                radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 12px 12px, 16px 16px;
+            background-position: 0 0, 0 0, 0 0, 0 0, 4px 4px;
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%23ffffff' stroke='%23333333' stroke-width='1'><path d='M12 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 10c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z'/></svg>"), auto;
         }
         body.theme-beton .carousel-item {
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- AMBIANCE 3 : VERT POMME & ROSE INTENSE MARBRÉ (Curseur Fée SVG) --- */
+        /* --- AMBIANCE 3 : VERT CLAIR & ROSE VIF FIXE (Curseur Feuille SVG) --- */
         body.theme-feerique {
-            background-color: #2ecc71;
+            background-color: #b7e4c7;
             background-image: 
-                radial-gradient(circle at 15% 25%, rgba(255, 20, 147, 0.9) 0%, transparent 45%),
-                radial-gradient(circle at 85% 75%, rgba(46, 204, 113, 0.95) 0%, transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(255, 105, 180, 0.85) 0%, transparent 55%),
-                radial-gradient(circle at 80% 20%, rgba(100, 255, 150, 0.9) 0%, transparent 40%),
-                radial-gradient(circle at 30% 70%, rgba(255, 0, 127, 0.7) 0%, transparent 50%);
-            background-size: 180% 180%;
-            animation: marbrageMouvant 10s ease infinite alternate;
-            /* Curseur de petite fée vectoriel */
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='%23ff1493' stroke='%23ffffff' stroke-width='1'><path d='M12 2C10.5 4 8 6 8 9c0 2 1.5 3.5 3 4l-3 7h2l2-4 2 4h2l-3-7c1.5-.5 3-2 3-4 0-3-2.5-5-4-7zm-5 5c-.8 0-1.5.7-1.5 1.5S6.2 10 7 10s1.5-.7 1.5-1.5S7.8 7 7 s0zm10 0c-.8 0-1.5.7-1.5 1.5S16.2 10 17 10s1.5-.7 1.5-1.5S17.8 7 17 7z'/></svg>"), auto;
-        }
-        @keyframes marbrageMouvant {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
+                radial-gradient(circle at 15% 25%, rgba(255, 105, 180, 0.4) 0%, transparent 35%),
+                radial-gradient(circle at 85% 75%, rgba(149, 213, 178, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(216, 243, 220, 0.9) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(255, 20, 147, 0.35) 0%, transparent 30%);
+            background-size: 100% 100%;
+            /* Curseur de petite feuille verte vectorielle */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='38' height='38' viewBox='0 0 24 24' fill='%232d6a4f' stroke='%23d8f3dc' stroke-width='1'><path d='M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8 0 2.21.89 4.2 2.34 5.65L4 20h3.35l2.35-2.35C11.15 18.11 11.57 18.2 12 18.2c4.42 0 8-3.58 8-8 0-2.21-.9-4.2-2.35-5.65zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z'/></svg>"), auto;
         }
         body.theme-feerique::before {
             content: "";
@@ -86,16 +81,16 @@
             background-image: 
                 radial-gradient(3px 3px at 40px 60px, #ffffff, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 150px 180px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 250px 90px, #ff1493, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 250px 90px, #ff69b4, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 320px 280px, #ffffff, rgba(0,0,0,0));
             background-size: 250px 250px;
-            opacity: 0.95;
-            animation: scintillementPaillettes 1.5s infinite alternate;
+            opacity: 0.9;
+            animation: scintillementEau 2.2s infinite alternate ease-in-out;
             z-index: 0;
             pointer-events: none;
         }
         body.theme-feerique .carousel-item {
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 20, 147, 0.6);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px rgba(82, 183, 136, 0.7);
         }
 
         /* --- AMBIANCE 4 : CIEL TEXTURÉ NUAGE (Curseur Nuage SVG) --- */
@@ -113,10 +108,11 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 255, 255, 0.5);
         }
 
-        @keyframes scintillementPaillettes {
-            0% { opacity: 0.3; transform: scale(0.98); filter: brightness(0.8); }
-            50% { opacity: 1; transform: scale(1.02); filter: brightness(1.4); }
-            100% { opacity: 0.4; transform: scale(1); filter: brightness(0.9); }
+        /* Effet scintillement doux type reflets dans l'eau (sans mouvement avant/arrière) */
+        @keyframes scintillementEau {
+            0% { opacity: 0.2; filter: brightness(0.6); }
+            50% { opacity: 1; filter: brightness(1.5); }
+            100% { opacity: 0.3; filter: brightness(0.7); }
         }
 
         /* ==========================================================
@@ -130,7 +126,7 @@
             border: none;
             color: #ffffff;
             font-size: 4rem;
-            cursor: pointer; /* Remet la petite main classique au survol */
+            cursor: pointer;
             z-index: 10;
             opacity: 0.75;
             transition: opacity 0.3s, transform 0.3s;
@@ -184,7 +180,7 @@
             display: block;
             width: 100%;
             height: 100%;
-            cursor: pointer; /* Remet la petite main classique au survol des photos */
+            cursor: pointer;
         }
 
         .carousel-item img {
