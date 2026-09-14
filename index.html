@@ -2,13 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Journal Photo</title>
+    <title>Mon Journal Photo - Multi-Ambiances</title>
     <style>
         /* ==========================================================
-           1. LE FOND BLEU NUIT MAGIQUE & ÉTOILES SCINTILLANTES
+           1. STYLES GÉNÉRAUX & CURSEURS SUR-MESURE PAR THÈME
            ========================================================== */
         body {
-            background-color: #050714; /* Bleu nuit profond */
             margin: 0;
             overflow: hidden;
             height: 100vh;
@@ -16,10 +15,15 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            transition: background 0.8s ease;
         }
 
-        /* Les petites paillettes / étoiles en arrière-plan */
-        body::before {
+        /* --- AMBIANCE 1 : BLEU NUIT ÉTOILÉ --- */
+        body.theme-bleu {
+            background-color: #050714;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>⭐</svg>"), auto;
+        }
+        body.theme-bleu::before {
             content: "";
             position: absolute;
             width: 100%;
@@ -29,22 +33,102 @@
                 radial-gradient(2px 2px at 40px 70px, rgba(138, 180, 248, 0.8), rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 150px 120px, rgba(197, 138, 248, 0.8), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 200px 200px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 300px 100px, rgba(138, 224, 248, 0.8), rgba(0,0,0,0));
-            background-repeat: repeat;
+                radial-gradient(2px 2px at 200px 200px, #ffffff, rgba(0,0,0,0));
             background-size: 350px 350px;
-            opacity: 0.5;
+            opacity: 0.6;
             animation: scintillement 4s infinite alternate;
             z-index: 0;
+            pointer-events: none;
+        }
+        body.theme-bleu .carousel-item {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(138, 180, 248, 0.75);
+        }
+
+        /* --- AMBIANCE 2 : BÉTON MAT --- */
+        body.theme-beton {
+            background-color: #8c8f94;
+            background-image: radial-gradient(rgba(0,0,0,0.15) 15%, transparent 16%),
+                              radial-gradient(rgba(255,255,255,0.05) 15%, transparent 16%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>👤</svg>"), auto;
+        }
+        body.theme-beton .carousel-item {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 255, 255, 0.7);
+        }
+
+        /* --- AMBIANCE 3 : VERT & ROSE FÉERIQUE --- */
+        body.theme-feerique {
+            background-color: #1a0f1f;
+            background-image: radial-gradient(circle at 30% 30%, rgba(53, 162, 115, 0.3), transparent 60%),
+                              radial-gradient(circle at 70% 70%, rgba(219, 112, 147, 0.3), transparent 60%);
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>🧚‍♀️</svg>"), auto;
+        }
+        body.theme-feerique::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 30px 50px, #ffb6c1, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 120px 140px, #98fb98, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 220px 80px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 280px 250px, #ff69b4, rgba(0,0,0,0));
+            background-size: 300px 300px;
+            opacity: 0.8;
+            animation: scintillement 3s infinite alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+        body.theme-feerique .carousel-item {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(80, 220, 130, 0.8);
+        }
+
+        /* --- AMBIANCE 4 : CIEL NUAGEUX --- */
+        body.theme-ciel {
+            background-color: #b0c4de;
+            background-image: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.4), transparent 70%);
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' font-size='24'>☁️</svg>"), auto;
+        }
+        body.theme-ciel .carousel-item {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 255, 255, 0.8);
         }
 
         @keyframes scintillement {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.7; }
+            0% { opacity: 0.4; }
+            100% { opacity: 0.8; }
         }
 
         /* ==========================================================
-           2. LA SCÈNE 3D ET LA ROUE
+           2. LES FLÈCHES STYLISÉES SUR LES CÔTÉS
+           ========================================================== */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%) rotate(-25deg);
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 3.5rem;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.7;
+            transition: opacity 0.3s, transform 0.3s;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            user-select: none;
+        }
+
+        .nav-arrow:hover {
+            opacity: 1;
+            transform: translateY(-50%) rotate(0deg) scale(1.1);
+        }
+
+        #prevBtn { left: 40px; }
+        #nextBtn { right: 40px; transform: translateY(-50%) rotate(180deg); }
+
+        /* ==========================================================
+           3. LA SCÈNE 3D ET LA ROUE
            ========================================================== */
         .carousel-stage {
             perspective: 1600px;
@@ -57,7 +141,6 @@
         }
 
         .carousel {
-            /* FORMAT 4/3 PAYSAGE : 320px de large pour 240px de haut */
             width: 320px;  
             height: 240px; 
             position: relative;
@@ -65,24 +148,16 @@
             transition: transform 0.1s ease-out;
         }
 
-        /* ==========================================================
-           3. LES IMAGES : SANS CADRE BLANC, AVEC HALO LUMINEUX 3D
-           ========================================================== */
         .carousel-item {
             position: absolute;
             width: 100%;
             height: 100%;
-            
-            border: none; /* Pas de cadre blanc */
-            border-radius: 10px; /* Coins légèrement arrondis */
-            
-            /* HALO LUMINEUX ET PROFONDEUR 3D */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 
-                        0 0 25px rgba(138, 180, 248, 0.4);
-            
+            border: none;
+            border-radius: 10px;
             overflow: hidden;
-            background-color: #0b0f19;
+            background-color: #1a1a1a;
             backface-visibility: hidden;
+            transition: box-shadow 0.5s ease;
         }
 
         .carousel-item a {
@@ -94,81 +169,110 @@
         .carousel-item img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Recadre proprement l'image sans la déformer */
+            object-fit: cover;
             display: block;
         }
 
-        /* ==========================================================
-           4. POSITIONNEMENT DES PHOTOS DANS LE CERCLE (La Roue)
-           (translateZ augmenté à 450px pour s'adapter au format paysage)
-           ========================================================== */
-        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(450px); }
-        .carousel-item:nth-child(2) { transform: rotateY(60deg) translateZ(450px); }
-        .carousel-item:nth-child(3) { transform: rotateY(120deg) translateZ(450px); }
-        .carousel-item:nth-child(4) { transform: rotateY(180deg) translateZ(450px); }
-        .carousel-item:nth-child(5) { transform: rotateY(240deg) translateZ(450px); }
-        .carousel-item:nth-child(6) { transform: rotateY(300deg) translateZ(450px); }
+        /* Positionnement exact pour 5 photos */
+        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(420px); }
+        .carousel-item:nth-child(2) { transform: rotateY(72deg) translateZ(420px); }
+        .carousel-item:nth-child(3) { transform: rotateY(144deg) translateZ(420px); }
+        .carousel-item:nth-child(4) { transform: rotateY(216deg) translateZ(420px); }
+        .carousel-item:nth-child(5) { transform: rotateY(288deg) translateZ(420px); }
     </style>
 </head>
-<body>
+<body class="theme-bleu">
+
+    <!-- Flèches pour changer d'ambiance -->
+    <button class="nav-arrow" id="prevBtn">&#10229;</button>
+    <button class="nav-arrow" id="nextBtn">&#10230;</button>
 
     <div class="carousel-stage">
-        <div class="carousel">
-            
-            <!-- ==========================================================
-               5. TES IMAGES ET LEURS LIENS VERS D'AUTRES PAGES
-               ========================================================== -->
-            
-            <div class="carousel-item">
-                <a href="soul-forest.html">
-                    <img src="SEOUL FOREST PART 2 . 1.JPG" alt="Soul Forest">
-                </a>
-            </div>
-            
-            <div class="carousel-item">
-                <a href="page2.html">
-                    <img src="YEOUIDO ECOLOGIC PARK 1.JPG" alt="Photo 2">
-                </a>
-            </div>
-            
-            <div class="carousel-item">
-                <a href="page3.html">
-                    <img src="SEOUL FOREST PART 1 . 1.JPG" alt="Photo 3">
-                </a>
-            </div>
-            
-            <div class="carousel-item">
-                <a href="page4.html">
-                    <img src="PARAPLUIE 1.JPG" alt="Photo 4">
-                </a>
-            </div>
-            
-            <div class="carousel-item">
-                <a href="page5.html">
-                    <img src="DDP 1.jpg" alt="Photo 5">
-                </a>
-            </div>
-            
-            <div class="carousel-item">
-                <a href="page6.html">
-                    <img src="NAKSONGDAE 1" alt="Photo 6">
-                </a>
-            </div>
-
+        <div class="carousel" id="carousel">
+            <!-- Les 5 photos injectées dynamiquement selon l'ambiance -->
         </div>
     </div>
 
     <script>
-        /* ==========================================================
-           6. LE MOTEUR JS (Réaction au scroll de la souris)
-           ========================================================== */
+        // ==========================================================
+        // 4. DONNÉES : 5 PHOTOS DIFFÉRENTES POUR CHAQUE AMBIANCE
+        // ==========================================================
+        const themeData = {
+            'theme-bleu': [
+                { img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&h=450&auto=format&fit=crop", link: "fait.html" },
+                { img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-2.html" },
+                { img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-3.html" },
+                { img: "https://images.unsplash.com/photo-1426604966848-d7adac902bff?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-4.html" },
+                { img: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=600&h=450&auto=format&fit=crop", link: "bleu-5.html" }
+            ],
+            'theme-beton': [
+                { img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-1.html" },
+                { img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-2.html" },
+                { img: "https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-3.html" },
+                { img: "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-4.html" },
+                { img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600&h=450&auto=format&fit=crop", link: "beton-5.html" }
+            ],
+            'theme-feerique': [
+                { img: "SAULE PLEUREUR 1.JPG", link: "fee-1.html" },
+                { img: "SEOUL FOREST PART 1 . 1.JPG" },
+                { img: "SEOUL FOREST PART 2 . 1.JPG", link: "fee-3.html" },
+                { img: "YEOUIDO ECOLOGIC PARK 1.JPG" },
+                { img: "YEOUIDO ECOLOGIC PARK 2.JPG", link: "fee-5.html" }
+            ],
+            'theme-ciel': [
+                { img: "https://images.unsplash.com/photo-1534088568595-a066f410bcda?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-1.html" },
+                { img: "https://images.unsplash.com/photo-1509803874385-db7c23652552?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-2.html" },
+                { img: "https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-3.html" },
+                { img: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-4.html" },
+                { img: "https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?q=80&w=600&h=450&auto=format&fit=crop", link: "ciel-5.html" }
+            ]
+        };
+
+        // ==========================================================
+        // 5. MOTEURS : ROTATION 3D & CHANGEMENT D'AMBIANCE DYNAMIQUE
+        // ==========================================================
         let currentAngle = 0;
-        const carousel = document.querySelector('.carousel');
+        const carousel = document.getElementById('carousel');
 
         window.addEventListener('wheel', (event) => {
             currentAngle += event.deltaY * 0.35; 
             carousel.style.transform = `rotateY(${currentAngle}deg)`;
         });
+
+        const themes = ['theme-bleu', 'theme-beton', 'theme-feerique', 'theme-ciel'];
+        let currentThemeIndex = 0;
+        const body = document.body;
+
+        function updateCarouselPhotos(themeName) {
+            carousel.innerHTML = ""; // Vide la roue
+            const photos = themeData[themeName];
+
+            photos.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'carousel-item';
+                div.innerHTML = `
+                    <a href="${item.link}">
+                        <img src="${item.img}" alt="Photo de l'ambiance">
+                    </a>
+                `;
+                carousel.appendChild(div);
+            });
+        }
+
+        function changeTheme(direction) {
+            body.classList.remove(themes[currentThemeIndex]);
+            currentThemeIndex = (currentThemeIndex + direction + themes.length) % themes.length;
+            const newTheme = themes[currentThemeIndex];
+            
+            body.classList.add(newTheme);
+            updateCarouselPhotos(newTheme); // Charge les 5 nouvelles photos associées
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => changeTheme(1));
+        document.getElementById('prevBtn').addEventListener('click', () => changeTheme(-1));
+
+        // Initialisation au chargement de la page avec le premier thème
+        updateCarouselPhotos(themes[0]);
     </script>
 </body>
 </html>
