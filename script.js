@@ -6,7 +6,7 @@ function updateCarousel() {
     const isMobile = window.innerWidth < 768;
     
     // On réduit l'espacement pour que les photos se chevauchent plus joliment
-    const spacing = isMobile ? 120 : 180;
+    const spacing = isMobile ? 150 : 270;
 
     items.forEach((item, index) => {
         let offset = (index - currentIndex) % totalItems;
