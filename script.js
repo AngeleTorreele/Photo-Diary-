@@ -3,13 +3,13 @@ const totalItems = items.length;
 let currentIndex = 0;
 
 function updateCarousel() {
-    // Sur téléphone, le CSS gère l'affichage vertical, pas besoin du JS
-    if (window.innerWidth < 768) return;
-
-    const spacing = 350;
+    const isMobile = window.innerWidth < 768;
+    
+    // Espacement adapté : horizontal sur PC (350px), vertical sur mobile (240px)
+    const spacing = isMobile ? 240 : 350;
 
     items.forEach((item, index) => {
-        // Calcule l'écart en gérant la boucle infinie
+        // Boucle infinie fluide
         let offset = (index - currentIndex) % totalItems;
         if (offset > totalItems / 2) offset -= totalItems;
         if (offset < -totalItems / 2) offset += totalItems;
@@ -21,14 +21,20 @@ function updateCarousel() {
         const opacity = absOffset > 2 ? 0 : Math.max(0, 1 - absOffset * 0.35);
         const zIndex = totalItems - Math.round(absOffset);
 
-        item.style.transform = `translateX(${pos}px) scale(${scale})`;
+        // Application de l'axe : translateY pour le mobile, translateX pour l'ordi
+        if (isMobile) {
+            item.style.transform = `translateY(${pos}px) scale(${scale})`;
+        } else {
+            item.style.transform = `translateX(${pos}px) scale(${scale})`;
+        }
+
         item.style.opacity = opacity;
         item.style.zIndex = zIndex;
         item.style.pointerEvents = absOffset === 0 ? 'auto' : 'none';
     });
 }
 
-// 1. Roulette de la souris avec boucle infinie fluide
+// 1. Roulette de la souris (Ordinateur)
 window.addEventListener('wheel', (e) => {
     if (window.innerWidth < 768) return; 
     e.preventDefault();
@@ -41,7 +47,7 @@ window.addEventListener('wheel', (e) => {
     updateCarousel();
 }, { passive: false });
 
-// 2. Navigation au clavier (Flèches) avec boucle infinie
+// 2. Navigation au clavier (Ordinateur)
 window.addEventListener('keydown', (e) => {
     if (window.innerWidth < 768) return;
     
@@ -54,6 +60,39 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-// Lancement initial
+// 3. Navigation Tactile Swipe (Téléphone - Vertical)
+let touchStartY = 0;
+
+window.addEventListener('touchstart', (e) => {
+    if (window.innerWidth >= 768) return;
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+    if (window.innerWidth >= 768) return;
+    e.preventDefault(); // Empêche le scroll de page pour garder le contrôle du carrousel
+}, { passive: false });
+
+window.addEventListener('touchend', (e) => {
+    if (window.innerWidth >= 768 || !touchStartY) return;
+    
+    const touchEndY = e.changedTouches[0].clientY;
+    const diff = touchStartY - touchEndY;
+
+    // Si on glisse le doigt verticalement
+    if (Math.abs(diff) > 30) {
+        if (diff > 0) {
+            // Glissement vers le haut -> photo suivante
+            currentIndex = (currentIndex + 1) % totalItems;
+        } else {
+            // Glissement vers le bas -> photo précédente
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        }
+        updateCarousel();
+    }
+    touchStartY = 0;
+}, { passive: true });
+
+// Actualisation au redimensionnement
 window.addEventListener('resize', updateCarousel);
 updateCarousel();
