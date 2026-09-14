@@ -17,7 +17,7 @@
             position: relative;
             background-color: #ffffff;
             transition: background 0.5s ease;
-            cursor: default;
+            cursor: default; /* Curseur classique */
         }
 
         body.theme-bleu,
@@ -83,7 +83,7 @@
             overflow: hidden;
             background-color: #fefefe;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-            /* Les styles de base (taille, opacité, position) sont calculés dynamiquement en JS pour un dégressif fluide */
+            /* Les styles de taille, opacité et position sont gérés dynamiquement en JS */
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, box-shadow 0.5s ease;
         }
 
@@ -231,7 +231,6 @@
                     let opacity = Math.max(0.15, 1 - (distance * 0.3));
                     item.style.transform = `scale(${scale})`;
                     item.style.opacity = `${opacity}`;
-                    // Gestion de la superposition pour que les photos se glissent logiquement sous les autres
                     item.style.zIndex = `${50 - distance * 10}`;
                     item.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.04)';
                 }
