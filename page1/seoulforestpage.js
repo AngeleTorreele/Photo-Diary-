@@ -2,42 +2,50 @@ const cards = document.querySelectorAll('.photo-card');
 const overlay = document.getElementById('overlay');
 const flipBtn = document.getElementById('flip-btn');
 
-let scrollDepth = 0;
+let targetScrollDepth = 0;
+let currentScrollDepth = 0;
 let activeCard = null;
 
-// --- 1. NAVIGATION INFINIE À LA MOLETTE (ROULETTE) ---
+// --- 1. NAVIGATION INFINIE FLUIDE À LA MOLETTE (INTERPOLATION LERP) ---
 window.addEventListener('wheel', (e) => {
-    if (activeCard) return; // Bloqué si une photo est en grand
+    if (activeCard) return; // Bloqué si une photo est ouverte
     e.preventDefault();
     
-    // Vitesse de défilement de la molette
-    scrollDepth += e.deltaY * 0.0007;
+    targetScrollDepth += e.deltaY * 0.0006;
+}, { passive: false });
+
+// Boucle d'animation pour une fluidité parfaite (plus aucun hachage)
+function animateGallery() {
+    // Lissage du mouvement (lerp)
+    currentScrollDepth += (targetScrollDepth - currentScrollDepth) * 0.1;
 
     cards.forEach((card) => {
         let baseDepth = parseFloat(card.style.getPropertyValue('--depth')) || 0.5;
         
-        // Boucle infinie modulo 1 (quand ça sort d'un côté, ça revient de l'autre)
-        let currentDepth = (baseDepth + scrollDepth) % 1;
+        let currentDepth = (baseDepth + currentScrollDepth) % 1;
         if (currentDepth < 0) currentDepth += 1;
 
-        // Échelle (taille) et opacité selon la profondeur
-        let scale = 0.4 + (currentDepth * 0.8);
-        let opacity = Math.pow(currentDepth, 1.2); // Totalement opaque devant, transparent derrière
+        // Échelle augmentée pour plus de présence et de chevauchement
+        let scale = 0.5 + (currentDepth * 0.9);
+        let opacity = Math.pow(currentDepth, 1.1); // Pleine opacité devant, transparence au fond
         let zIndex = Math.round(currentDepth * 100);
 
-        card.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${card.style.getPropertyValue('--rot')})`;
-        card.style.opacity = Math.max(0.08, opacity);
+        card.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        card.style.opacity = Math.max(0.05, opacity);
         card.style.zIndex = zIndex;
     });
-}, { passive: false });
 
-// Initialisation de la position de départ
+    requestAnimationFrame(animateGallery);
+}
+requestAnimationFrame(animateGallery);
+
+// Initialisation des positions au chargement
 cards.forEach(card => {
     let baseDepth = parseFloat(card.style.getPropertyValue('--depth')) || 0.5;
-    let scale = 0.4 + (baseDepth * 0.8);
-    let opacity = Math.pow(baseDepth, 1.2);
-    card.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${card.style.getPropertyValue('--rot')})`;
-    card.style.opacity = Math.max(0.08, opacity);
+    let scale = 0.5 + (baseDepth * 0.9);
+    let opacity = Math.pow(baseDepth, 1.1);
+    card.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    card.style.opacity = Math.max(0.05, opacity);
 });
 
 
@@ -75,7 +83,7 @@ cards.forEach(card => {
         isDragging = false;
     });
 
-    // --- 3. OUVERTURE EN GRAND AU CLIC ---
+    // --- 3. OUVERTURE EN GRAND AU CLIC (SUR FOND BLANC PUR) ---
     card.addEventListener('click', (e) => {
         if (activeCard) return;
         
