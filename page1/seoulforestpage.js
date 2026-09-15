@@ -1,82 +1,140 @@
-const cards = document.querySelectorAll('.photo-card');
-const totalCards = cards.length;
-const overlay = document.getElementById('overlay');
-
-let scrollPosition = 0;
-
-// Animation du flux infini basé sur le scroll de la souris
-window.addEventListener('wheel', (e) => {
-    // Si une photo est agrandie en plein écran, on bloque le scroll du fond
-    if (document.querySelector('.photo-card.active')) return;
-
-    e.preventDefault();
-    scrollPosition += e.deltaY * 0.003; // Vitesse de défilement du flux
-
-    updateFlow();
-}, { passive: false });
-
-function updateFlow() {
-    cards.forEach((card, index) => {
-        // Calcul de la position dans la boucle infinie
-        let progress = (index / totalCards + scrollPosition) % 1;
-        if (progress < 0) progress += 1;
-
-        // Transformation de la progression en effet de profondeur (Z-index, échelle et opacité)
-        // progress va de 0 (fond lointain) à 1 (premier plan)
-        
-        const scale = 0.4 + (progress * 0.9); // De petit à grand
-        const opacity = Math.sin(progress * Math.PI); // Fondu enchaîné : transparent aux extrémités, opaque au milieu
-        const zIndex = Math.round(progress * 100);
-        
-        // Espacement de la grille (alignement géométrique propre)
-        const col = parseInt(card.style.getPropertyValue('--col')) || 1;
-        const row = parseInt(card.style.getPropertyValue('--row')) || 1;
-        const offsetX = (col - 2) * 120;
-        const offsetY = (row - 1.5) * 120;
-
-        // Effet de zoom progressif vers l'utilisateur
-        const translateZ = (progress - 0.5) * 800;
-
-        if (!card.classList.contains('active')) {
-            card.style.transform = `translate(${offsetX}px, ${offsetY}px) translateZ(${translateZ}px) scale(${scale})`;
-            card.style.opacity = Math.max(0, opacity);
-            card.style.zIndex = zIndex;
-            card.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none'; // Désactive les clics sur les photos invisibles
-        }
-    });
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-// Gestion du clic pour agrandir et retourner la photo
-cards.forEach(card => {
-    card.addEventListener('click', (e) => {
-        if (card.classList.contains('active')) {
-            // Si déjà grand, on retourne la carte
-            card.classList.toggle('flipped');
-            return;
-        }
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #121212; /* Fond gris foncé presque noir */
+    font-family: sans-serif;
+}
 
-        // Réinitialiser les autres cartes
-        cards.forEach(c => {
-            c.classList.remove('active', 'flipped');
-        });
+.infinite-grid {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1500px;
+}
 
-        // Mettre cette carte en avant
-        card.classList.add('active');
-        card.style.opacity = '1';
-        card.style.zIndex = '10000';
-        overlay.classList.add('visible');
-        e.stopPropagation();
-    });
-});
+/* Miniatures plus petites (effet pixels / tableau) */
+.photo-card {
+    position: absolute;
+    width: 130px;
+    height: 160px;
+    background: #1e1e1e;
+    padding: 6px 6px 20px 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    border-radius: 0; 
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out, box-shadow 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+    transform-style: preserve-3d;
+}
 
-// Fermer le mode grand en cliquant sur le fond blanc/sombre
-overlay.addEventListener('click', () => {
-    cards.forEach(card => {
-        card.classList.remove('active', 'flipped');
-    });
-    overlay.classList.remove('visible');
-    updateFlow();
-});
+.photo-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
 
-// Initialisation au chargement
-updateFlow();
+/* Le retournement s'applique bien quand la classe flipped est présente */
+.photo-card.flipped .photo-inner {
+    transform: rotateY(180deg);
+}
+
+.photo-front, .photo-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    display: block;
+}
+
+.photo-back {
+    background-color: #fdfbf7;
+    color: #333;
+    padding: 15px;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    transform: rotateY(180deg);
+    border: 1px dashed #dcd6cd;
+    border-radius: 0;
+}
+
+/* --- ÉTAT AGRANDI (PLEIN ÉCRAN) --- */
+.photo-card.active {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 400px !important;
+    height: 480px !important;
+    padding: 12px 12px 35px 12px !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    z-index: 10000 !important;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.7) !important;
+    opacity: 1 !important;
+    cursor: default;
+}
+
+.photo-card.active .photo-back {
+    font-size: 0.95rem;
+    padding: 25px;
+}
+
+/* Overlay sombre */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 9999;
+}
+
+#overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Bouton de retournement cliquable en bas à droite */
+.photo-card.active::after {
+    content: "↻";
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
+    z-index: 10001;
+    border-radius: 0;
+}
