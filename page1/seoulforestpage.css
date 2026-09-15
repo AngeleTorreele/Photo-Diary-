@@ -8,34 +8,52 @@ body, html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: #1a1a1a; /* Gris foncé presque noir */
+    background-color: #ffffff; /* Fond blanc demandé */
     font-family: sans-serif;
 }
 
-#wall {
+#gallery-container {
     position: relative;
     width: 100vw;
     height: 100vh;
+    perspective: 1200px;
+    overflow: hidden;
 }
 
-/* Style des cartes photos */
+/* Style des cartes photos éparpillées (sans cadre gris) */
 .photo-card {
     position: absolute;
-    width: 160px;
-    height: 200px;
-    background: #2a2a2a;
-    padding: 8px 8px 25px 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    cursor: pointer;
-    transition: transform 0.3s ease;
+    width: 140px;
+    height: 180px;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%) rotate(var(--rot));
+    cursor: grab;
+    user-select: none;
+    transform-style: preserve-3d;
+    transition: filter 0.2s ease;
 }
 
+.photo-card:active {
+    cursor: grabbing;
+}
+
+/* Épaisseur / tourbillon 3D de la carte */
 .photo-inner {
     position: relative;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.6s ease;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    background: #e0ded8;
+}
+
+.photo-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #d0ceca;
+    transform: translateZ(-3px);
 }
 
 .photo-card.flipped .photo-inner {
@@ -49,17 +67,19 @@ body, html {
     backface-visibility: hidden;
 }
 
+/* L'image prend toute la place, aucun cadre */
 .photo-front img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
 .photo-back {
     background-color: #fdfbf7;
     color: #333;
     padding: 15px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,34 +87,71 @@ body, html {
     transform: rotateY(180deg);
 }
 
-/* --- QUAND ON CLIQUE (AGRANDI) --- */
+/* --- ÉTAT AGRANDI (PLEIN ÉCRAN) --- */
 .photo-card.active {
     position: fixed !important;
-    top: 50% !important;
+    top: 45% !important;
     left: 50% !important;
-    width: 400px !important;
-    height: 500px !important;
-    transform: translate(-50%, -50%) !important;
+    width: 360px !important;
+    height: 460px !important;
+    transform: translate(-50%, -50%) rotate(0deg) !important;
     z-index: 10000 !important;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.8) !important;
     cursor: default;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
 }
 
-/* Fond sombre derrière l'image agrandie */
+/* Le halo / fond sombre s'active uniquement en grand */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.75); /* Halo lumineux / sombre */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
     z-index: 9999;
 }
 
 #overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Bouton de retournement placé SOUS la photo active */
+#flip-btn {
+    position: fixed;
+    top: calc(45% + 260px); /* Juste en dessous de la photo (460px / 2 + marge) */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    color: #222;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 10001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, background 0.2s;
+}
+
+#flip-btn:hover {
+    background: #f0f0f0;
+}
+
+#overlay.visible #flip-btn {
     opacity: 1;
     pointer-events: auto;
 }
