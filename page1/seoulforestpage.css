@@ -14,7 +14,7 @@ body, html {
 
 .infinite-grid {
     position: relative;
-    width: 100vw;
+    width: 100vw
     height: 100vh;
     display: flex;
     justify-content: center;
