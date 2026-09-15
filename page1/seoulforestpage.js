@@ -1,140 +1,40 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+const cards = document.querySelectorAll('.photo-card');
+const overlay = document.getElementById('overlay');
 
-body, htl {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: #121212; /* Fond gris foncé presque noir */
-    font-family: sans-serif;
-}
+// Clic pour agrandir ou retourner
+cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+        if (card.classList.contains('active')) {
+            // Si déjà grand, on retourne la carte
+            card.classList.toggle('flipped');
+            e.stopPropagation();
+            return;
+        }
 
-.infinite-grid {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 1500px;
-}
+        // Sinon on l'ouvre en grand
+        cards.forEach(c => c.classList.remove('active', 'flipped'));
+        card.classList.add('active');
+        overlay.classList.add('visible');
+        e.stopPropagation();
+    });
+});
 
-/* Miniatures plus petites (effet pixels / tableau) */
-.photo-card {
-    position: absolute;
-    width: 130px;
-    height: 160px;
-    background: #1e1e1e;
-    padding: 6px 6px 20px 6px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    border-radius: 0; 
-    transition: transform 0.1s ease-out, opacity 0.1s ease-out, box-shadow 0.3s ease;
-    cursor: pointer;
-    user-select: none;
-    transform-style: preserve-3d;
-}
+// Retourner avec la barre d'espace ou Entrée au clavier
+window.addEventListener('keydown', (e) => {
+    const activeCard = document.querySelector('.photo-card.active');
+    if (!activeCard) return;
 
-.photo-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-}
+    if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        activeCard.classList.toggle('flipped');
+    } else if (e.key === 'Escape') {
+        activeCard.classList.remove('active', 'flipped');
+        overlay.classList.remove('visible');
+    }
+});
 
-/* Le retournement s'applique bien quand la classe flipped est présente */
-.photo-card.flipped .photo-inner {
-    transform: rotateY(180deg);
-}
-
-.photo-front, .photo-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.photo-front img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0;
-    display: block;
-}
-
-.photo-back {
-    background-color: #fdfbf7;
-    color: #333;
-    padding: 15px;
-    text-align: center;
-    font-size: 0.75rem;
-    line-height: 1.4;
-    transform: rotateY(180deg);
-    border: 1px dashed #dcd6cd;
-    border-radius: 0;
-}
-
-/* --- ÉTAT AGRANDI (PLEIN ÉCRAN) --- */
-.photo-card.active {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    width: 400px !important;
-    height: 480px !important;
-    padding: 12px 12px 35px 12px !important;
-    transform: translate(-50%, -50%) scale(1) !important;
-    z-index: 10000 !important;
-    box-shadow: 0 30px 70px rgba(0,0,0,0.7) !important;
-    opacity: 1 !important;
-    cursor: default;
-}
-
-.photo-card.active .photo-back {
-    font-size: 0.95rem;
-    padding: 25px;
-}
-
-/* Overlay sombre */
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-    z-index: 9999;
-}
-
-#overlay.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Bouton de retournement cliquable en bas à droite */
-.photo-card.active::after {
-    content: "↻";
-    position: absolute;
-    bottom: 8px;
-    right: 12px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 15px;
-    cursor: pointer;
-    z-index: 10001;
-    border-radius: 0;
-}
+// Fermer en cliquant sur le fond sombre
+overlay.addEventListener('click', () => {
+    cards.forEach(card => card.classList.remove('active', 'flipped'));
+    overlay.classList.remove('visible');
+});
