@@ -3,79 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mur de Souvenirs</title>
+    <title>Mur Infini en Grille</title>
     <link rel="stylesheet" href="seoulforestpage.css">
 </head>
 <body>
 
-    <div id="wall">
-        <div class="container" id="photo-container">
-            
-            <!-- Photo Paysage (4:3) -->
-            <div class="photo-card landscape" style="top: 20vh; left: 15vw; --random-rot: -6deg;">
-                <div class="photo-inner">
-                    <div class="photo-front">
-                        <img src="https://picsum.photos/id/1015/800/600" alt="Souvenir 1">
-                    </div>
-                    <div class="photo-back">
-                        <p>Derrière toutes les photos de la page, il y a le même texte. Un petit mot doux ou une pensée intemporelle pour garder la trace de ces instants précieux.</p>
-                    </div>
+    <!-- Le conteneur du flux de photos -->
+    <div class="infinite-grid" id="grid-container">
+        
+        <!-- Répète ou génère tes ~30 photos ici -->
+        <div class="photo-card" style="--col: 1; --row: 1;">
+            <div class="photo-inner">
+                <div class="photo-front">
+                    <img src="seoulforest1.jpg" alt="Photo 1">
+                </div>
+                <div class="photo-back">
+                    <p>Le texte de la page viendra ici. Un mot doux ou une pensée pour accompagner ce souvenir précieux.</p>
                 </div>
             </div>
-
-            <!-- Photo Portrait (3:4) -->
-            <div class="photo-card portrait" style="top: 50vh; left: 45vw; --random-rot: 4deg;">
-                <div class="photo-inner">
-                    <div class="photo-front">
-                        <img src="https://picsum.photos/id/1025/600/800" alt="Souvenir 2">
-                    </div>
-                    <div class="photo-back">
-                        <p>Derrière toutes les photos de la page, il y a le même texte. Un petit mot doux ou une pensée intemporelle pour garder la trace de ces instants précieux.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Photo Paysage (4:3) -->
-            <div class="photo-card landscape" style="top: 15vh; left: 70vw; --random-rot: -3deg;">
-                <div class="photo-inner">
-                    <div class="photo-front">
-                        <img src="https://picsum.photos/id/1040/800/600" alt="Souvenir 3">
-                    </div>
-                    <div class="photo-back">
-                        <p>Derrière toutes les photos de la page, il y a le même texte. Un petit mot doux ou une pensée intemporelle pour garder la trace de ces instants précieux.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Photo Carrée / Autre -->
-            <div class="photo-card square" style="top: 60vh; left: 10vw; --random-rot: 8deg;">
-                <div class="photo-inner">
-                    <div class="photo-front">
-                        <img src="https://picsum.photos/id/1050/700/700" alt="Souvenir 4">
-                    </div>
-                    <div class="photo-back">
-                        <p>Derrière toutes les photos de la page, il y a le même texte. Un petit mot doux ou une pensée intemporelle pour garder la trace de ces instants précieux.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Photo Portrait (3:4) -->
-            <div class="photo-card portrait" style="top: 25vh; left: 85vw; --random-rot: -5deg;">
-                <div class="photo-inner">
-                    <div class="photo-front">
-                        <img src="https://picsum.photos/id/1060/600/800" alt="Souvenir 5">
-                    </div>
-                    <div class="photo-back">
-                        <p>Derrière toutes les photos de la page, il y a le même texte. Un petit mot doux ou une pensée intemporelle pour garder la trace de ces instants précieux.</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
+
+        <div class="photo-card" style="--col: 2; --row: 1;">
+            <div class="photo-inner">
+                <div class="photo-front">
+                    <img src="DDP 1.jpg" alt="Photo 2">
+                </div>
+                <div class="photo-back">
+                    <p>Le texte de la page viendra ici. Un mot doux ou une pensée pour accompagner ce souvenir précieux.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="photo-card" style="--col: 3; --row: 1;">
+            <div class="photo-inner">
+                <div class="photo-front">
+                    <img src="FRAIS 1.JPG" alt="Photo 3">
+                </div>
+                <div class="photo-back">
+                    <p>Le texte de la page viendra ici. Un mot doux ou une pensée pour accompagner ce souvenir précieux.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="photo-card" style="--col: 1; --row: 2;">
+            <div class="photo-inner">
+                <div class="photo-front">
+                    <img src="FRAIS 2.JPG" alt="Photo 4">
+                </div>
+                <div class="photo-back">
+                    <p>Le texte de la page viendra ici. Un mot doux ou une pensée pour accompagner ce souvenir précieux.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="photo-card" style="--col: 2; --row: 2;">
+            <div class="photo-inner">
+                <div class="photo-front">
+                    <img src="FRAIS 3.JPG" alt="Photo 5">
+                </div>
+                <div class="photo-back">
+                    <p>Le texte de la page viendra ici. Un mot doux ou une pensée pour accompagner ce souvenir précieux.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="photo-card" style="--col: 3; --row: 2;">
+            <div class="photo-inner">
+                <div class="photo-front">
+                    <img src="FRAIS 4.JPG" alt="Photo 6">
+                </div>
+                <div class="photo-back">
+                    <p>Le texte de la page viendra ici. Un mot doux ou une pensée pour accompagner ce souvenir précieux.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tu peux continuer d'ajouter tes 30 photos en modifiant simplement --col et --row -->
+
     </div>
 
+    <!-- Fond sombre pour l'agrandissement -->
     <div id="overlay"></div>
 
-    <script src="script.js"></script>
+    <script src="seoulforestpage.js"></script>
 </body>
 </html>
